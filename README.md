@@ -1,0 +1,2 @@
+#  Infrastructure Virtualisée – Lab VMware Workstation
+ Ce projet correspond à un **laboratoire d’infrastructure virtualisée** réalisé dans un objectif de **formation, de test et de montée en compétences** autour des environnements systèmes et réseaux en entreprise.  L’infrastructure est entièrement virtualisée sous **VMware Workstation (dernière version)** et repose sur un **segment LAN dédié**, permettant à toutes les machines virtuelles de communiquer entre elles au sein d’un même réseau local, sans utiliser les VMnet par défaut.
