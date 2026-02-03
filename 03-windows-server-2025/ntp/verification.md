@@ -60,7 +60,6 @@ ramener l’écart à un seuil acceptable.
 Une fois l’heure corrigée, la synchronisation NTP fonctionne normalement.
 
 Bonnes pratiques
-
 Centraliser la synchronisation NTP sur le PDC Emulator
 Ne jamais configurer de serveurs NTP externes sur les DC secondaires
 Ne pas forcer la synchronisation NTP sur les postes clients
