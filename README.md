@@ -15,7 +15,7 @@ Ce lab simule une **infrastructure d’entreprise classique**, incluant :
 
 ---
 
-![Aperçu du projet](architecture/00-schema-reseau.png)
+![Aperçu du projet](00-architecture/schema-reseau.png)
 
 ---
 
