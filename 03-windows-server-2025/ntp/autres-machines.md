@@ -19,7 +19,7 @@ détenteur du rôle **PDC Emulator** via la hiérarchie Active Directory.
 
 ### Configuration appliquée
 
-Sur les contrôleurs de domaine secondaires (ex : `SRV-AD01`) :
+Sur les contrôleurs de domaine secondaires (ex : `SVL-PS-DC-02`) :
 
 ```cmd
 w32tm /config /syncfromflags:domhier /update
