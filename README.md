@@ -15,6 +15,10 @@ Ce lab simule une **infrastructure d’entreprise classique**, incluant :
 
 ---
 
+![Aperçu du projet](architecture/00-schema-reseau.png)
+
+---
+
 ## 🖥️ Environnement technique
 
 - **Plateforme de virtualisation** : VMware Workstation
@@ -45,8 +49,7 @@ Ce lab simule une **infrastructure d’entreprise classique**, incluant :
 L’ensemble du trafic sortant du LAN transite obligatoirement par ce pare-feu, permettant un **contrôle centralisé de la sécurité réseau**.
 
 ---
-![Aperçu du projet](architecture/schema-reseau.png)
----
+
 
 ## 🗄️ Machines virtuelles
 
