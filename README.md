@@ -14,6 +14,7 @@ Ce lab simule une **infrastructure d’entreprise classique**, incluant :
 - Des briques futures (serveur applicatif, sauvegarde)
 
 ---
+## 🏗️ Architecture de l’infrastructure
 
 ![Aperçu du projet](00-architecture/schema-reseau.png)
 
