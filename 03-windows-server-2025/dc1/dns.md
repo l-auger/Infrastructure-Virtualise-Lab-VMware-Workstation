@@ -8,7 +8,7 @@ Les zones DNS sont répliquées automatiquement entre les contrôleurs de domain
 Les zones du domaine sont configurées en mode intégré à Active Directory,
 garantissant la redondance et la cohérence des enregistrements DNS.
 
-![Zones DNS](screenshots/dns-zones-properties.png)
+![Zones DNS](screenshots/dns-zone-properties.png)
 
 ## Enregistrements DNS des contrôleurs de domaine
 Les enregistrements A des contrôleurs de domaine sont présents
