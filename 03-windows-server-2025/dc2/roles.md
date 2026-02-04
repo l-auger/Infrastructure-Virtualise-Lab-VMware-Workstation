@@ -1,12 +1,39 @@
-# DC2 – Rôles et fonctionnalités
+# Rôles – DC2
 
-## Informations générales
-- Nom du serveur : WIN-VFA8ENMM2DQ
-- OS : Windows Server 2025
-- Adresse IP : 192.168.11.2
-- Rôle : Contrôleur de domaine secondaire
+Le serveur **DC2** est un contrôleur de domaine secondaire du domaine `entreprise.local`.
+Il assure la redondance des services critiques fournis par DC1.
 
-## Rôles installés
-- Active Directory Domain Services (AD DS)
-- DNS Server
-- DHCP Server (secondaire)
+---
+
+## Active Directory (AD DS)
+
+- Contrôleur de domaine secondaire
+- Réplique automatiquement les données Active Directory depuis DC1
+- Permet l’authentification des utilisateurs en cas d’indisponibilité de DC1
+
+---
+
+## DNS
+
+- Serveur DNS intégré à Active Directory
+- Zones DNS répliquées automatiquement
+- Participe à la résolution de noms du domaine
+- Fonctionnement en **DNS redondant** (pas de HA actif/passif)
+
+---
+
+## DHCP (Failover)
+
+- Participe à la haute disponibilité du service DHCP
+- Réception et synchronisation des étendues depuis DC1
+- Mode : **équilibrage de charge**
+- Garantit la continuité de l’attribution des adresses IP
+
+---
+
+## Résumé
+
+DC2 renforce la résilience de l’infrastructure en assurant :
+- la continuité de l’authentification
+- la redondance DNS
+- la disponibilité du service DHCP
