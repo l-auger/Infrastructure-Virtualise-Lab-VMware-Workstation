@@ -7,8 +7,8 @@
 ## Équipements principaux
 - pfSense LAN : 192.168.11.1/24
 - pfSense WAN : 192.168.56.22/24
-- DC1 : 192.168.11.2 
-- DC2 : 192.168.11.3
+- DC1 : 192.168.11.3 
+- DC2 : 192.168.11.2
 - Win11 : DHCP
 
 ## DNS/DHCP
