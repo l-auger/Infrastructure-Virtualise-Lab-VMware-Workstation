@@ -42,14 +42,14 @@ Explications :
 - PubkeyAuthentication yes → autorise uniquement les clés SSH
 - AllowUsers adminsrv → limite l’accès SSH à l’utilisateur administrateur
 
-I/ Activation des mises à jour automatiques
+## 2. Activation des mises à jour automatiques
 ```bash
 sudo apt -y install unattended-upgrades
 sudo dpkg-reconfigure unattended-upgrades
 ```
 Objectif : Appliquer les correctifs de sécurité critiques
 
-3. Mise en place du firewall UFW
+## 3. Mise en place du firewall UFW
 Installation
 ```bash
 sudo apt -y install ufw
@@ -78,7 +78,7 @@ sudo ufw enable
 sudo ufw status verbose
 ```
 
-4. Protection contre les attaques brute-force (Fail2ban)
+## 4. Protection contre les attaques brute-force (Fail2ban)
 Installation
 ```bash
 sudo apt -y install fail2ban

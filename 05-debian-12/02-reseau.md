@@ -10,47 +10,55 @@ Configurer la machine Debian 12 pour :
 
 Cette étape valide l’utilisation du serveur dans une infrastructure réelle d’entreprise.
 
-1. Détection de l’interface réseau
+## 1. Détection de l’interface réseau
 Commande utilisée :
+```bash
 ip a
+```
 Résultat observé :
 Interface : ens33
 Adresse IP : 192.168.11.51/24
 Attribution : DHCP actif
 État : UP
 
-2. Vérification du routage
+## 2. Vérification du routage
 ip r
 Résultat :
 default via 192.168.11.1 dev ens33
 192.168.11.0/24 dev ens33 proto kernel scope link src 192.168.11.51
 ➡️ La machine est correctement reliée au réseau local entreprise.
 
-3. Tests de connectivité
+## 3. Tests de connectivité
 Test passerelle LAN
+```bash
 ping -c 4 192.168.11.1
+```
 Résultat :
 0 % de perte
 latence < 1 ms
 ➡️ Connectivité LAN valide
 
 Test accès Internet
+```bash
 ping -c 4 google.com
+```
 Résultat :
 résolution DNS fonctionnelle
 paquets reçus sans perte
 ➡️ Accès Internet opérationnel
 
-4. Intégration au domaine d’entreprise
+## 4. Intégration au domaine d’entreprise
 La machine a été configurée pour rejoindre le domaine interne, permettant :
 l’authentification via les comptes du domaine
 l’intégration dans l’infrastructure système
 la gestion centralisée des accès
 Cette étape prépare l’exploitation du serveur dans un contexte professionnel réel.
 
-5. Validation de l’accès au service intranet
+## 5. Validation de l’accès au service intranet
 Depuis la machine Debian :
+```bash
 curl -I http://localhost
+```
 Depuis un poste du réseau :
 http://192.168.11.51
 ➡️ Le serveur web Nginx intranet est accessible depuis le LAN.

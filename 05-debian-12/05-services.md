@@ -37,46 +37,39 @@ Associer l’adresse IP du serveur à un nom de domaine interne :
 intranet.entreprise
 
 Permet :
-
 - un accès utilisateur plus simple
 - une meilleure intégration dans le SI
 - la préparation d’un futur HTTPS
-3. Création de l’enregistrement DNS (côté serveur DNS)
+
+## 3. Création de l’enregistrement DNS (côté serveur DNS)
 
 ⚠️ Cette opération est réalisée sur le serveur DNS de l’infrastructure
 (et non sur la machine Debian).
 
 Type d’enregistrement
-
 Type : A
-
 Nom : intranet
-
 Domaine : entreprise
-
 Adresse IP : 192.168.11.51
 
 Résultat :
 
 intranet.entreprise → 192.168.11.51
 
-4. Vérification de la résolution DNS
-
-Depuis un poste du réseau :
-
-nslookup intranet.entreprise
-
+## 4. Vérification de la résolution DNS
+### Depuis un poste du réseau :
+```bash
+nslookup intranet.entreprise.local
+```
 ou :
-
-ping intranet.entreprise
-
-
+```bash
+ping intranet.entreprise.local
+```
 Résultat attendu :
 192.168.11.51
 
-5. Test d’accès à l’intranet via DNS
-
-Accès navigateur :
+## 5. Test d’accès à l’intranet via DNS
+### Accès navigateur :
 
 http://intranet.entreprise
 
