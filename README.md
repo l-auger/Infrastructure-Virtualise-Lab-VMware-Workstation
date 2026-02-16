@@ -124,7 +124,7 @@ Serveur de **sauvegarde**.
 
 ---
 
-# 🔄 Phase 2 – Migration vers VMware ESXi 8.x
+# 🔄 Phase 2 – Migration vers VMware ESXi 8.0.2
 
 ## 📌 Pourquoi migrer ?
 
@@ -141,7 +141,7 @@ L’environnement sous **VMware Workstation** présentait plusieurs limitations 
 
 ## 🖥️ Hyperviseur – `SVL-PS-HV-01`
 
-- **Hyperviseur** : VMware ESXi 8.x  
+- **Hyperviseur** : VMware ESXi 8.0.2 
 - **Type** : Bare-metal  
 - **Installation** : SSD dédié  
 - **Accès** : Interface Web sécurisée  
