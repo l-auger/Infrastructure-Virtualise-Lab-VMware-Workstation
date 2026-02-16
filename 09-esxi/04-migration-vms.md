@@ -1,172 +1,196 @@
-# 🔄 Migration des machines virtuelles vers ESXi
+# 🔄 Migration des VM VMware Workstation → VMware ESXi 8.x
 
 ## 🎯 Objectif
 
-Migrer l’infrastructure initialement déployée sous **VMware Workstation** vers l’hyperviseur **ESXi 8.x** afin de :
+Migrer l’infrastructure initialement déployée sous **VMware Workstation** vers **VMware ESXi 8.x** afin de :
 
 - Centraliser la gestion des machines virtuelles  
 - Supprimer la dépendance au système hôte Windows  
-- Permettre l’intégration de **Veeam**  
-- Se rapprocher d’une architecture d’entreprise réaliste  
+- Permettre l’intégration de **Veeam** via l’API VMware  
+- Se rapprocher d’une infrastructure entreprise (**hyperviseur bare-metal**)  
 
 ---
 
-## 🧠 Stratégie de migration
+## 🧠 Stratégie retenue
 
-Deux approches étaient possibles :
+### ✅ Migration des VM existantes (Workstation → ESXi)
 
-### ❌ Export OVA depuis Workstation
+L’objectif est de **conserver les VM, leurs données et leur configuration** en les déplaçant vers ESXi.
 
-**Avantages :**
+**Méthode utilisée :**
 
-- Rapide  
-- Peu de configuration  
-
-**Inconvénients :**
-
-- Risque d’erreurs réseau  
-- Problèmes de pilotes  
-- Configuration héritée non optimisée  
-- Mauvaise pratique pédagogique  
+- Export des VM depuis Workstation au format **OVF / OVA**  
+- Import dans ESXi via l’**interface Web**  
 
 ---
 
-### ✅ Recréation propre des VM
+## ⚠️ Pré-requis et précautions
 
-**Approche retenue.**
+Avant toute migration :
 
-**Avantages :**
+### 1) État des VM
+- Les VM doivent être **éteintes** (*Shutdown*), jamais suspendues.  
+- **Aucun snapshot actif** côté Workstation.  
 
-- Configuration optimisée pour ESXi  
-- Contrôle total du matériel virtuel  
-- Meilleure compréhension technique  
-- Nettoyage des anciennes configurations  
+### 2) Sauvegarde de sécurité (obligatoire)
 
-👉 **Choix pédagogique et professionnel : recréation complète.**
+Sauvegarder les dossiers Workstation des VM avant export (**copie brute**).
 
----
+**Exemple (Windows) :**
+```
+D:\BACKUP_VM_WORKSTATION\
+```
 
-## 📋 Ordre de migration
+🎯 Objectif : **revenir en arrière** en cas d’échec ou de corruption.
 
-L’ordre de migration est essentiel pour éviter les incohérences réseau ou domaine.
+### 3) Réseau ESXi prêt
 
-### 1️⃣ pfSense
+Sur ESXi, vérifier ou créer les **Port Groups** :
 
-**Pourquoi en premier ?**
-
-- Passerelle principale du LAN  
-- Gestion du **NAT** et de l’accès Internet  
-- Conditionne la connectivité des autres VM  
-
----
-
-### 2️⃣ DC1 — Contrôleur de domaine principal
-
-- **Active Directory**  
-- **DNS primaire**  
-- **DHCP** (si configuré)  
-
-Sans lui :
-
-- Le domaine ne fonctionne pas  
+- `PG-WAN`  
+- `PG-LAN`  
 
 ---
 
-### 3️⃣ DC2 — Contrôleur secondaire
+## 📋 Ordre de migration recommandé
 
-- Réplication **Active Directory**  
-- **DNS secondaire**  
-- Haute disponibilité  
+L’ordre est critique pour éviter les incohérences réseau ou domaine :
 
----
-
-### 4️⃣ Serveur applicatif Debian (NGINX)
-
-- Hébergement de l’**intranet**  
-- Dépendance au **DNS interne**  
+1️⃣ **pfSense**  
+2️⃣ **DC1** (contrôleur principal)  
+3️⃣ **DC2** (contrôleur secondaire)  
+4️⃣ **Serveur Debian** (NGINX / intranet)  
+5️⃣ **Client Windows 11**  
+6️⃣ **Serveur Veeam**  
 
 ---
 
-### 5️⃣ Poste client Windows 11
+## ⚙️ Procédure de migration (par VM)
 
-Validation finale :
+### A) Export depuis VMware Workstation
 
-- Test des **GPO**  
-- Accès intranet  
-- Résolution DNS  
+Dans Workstation :
 
----
+1. Clic droit sur la VM  
+2. **Manage**  
+3. **Export to OVF** (ou OVA selon options)
 
-## ⚙️ Méthodologie technique
+📦 **Fichiers générés :**
 
-Pour chaque VM :
-
-1. Création d’une **nouvelle VM** sur ESXi  
-2. Allocation **CPU / RAM** adaptée  
-3. Sélection du **bon Port Group**  
-4. Installation propre du système d’exploitation  
-5. Reconfiguration **IP**  
-6. Réintégration au **domaine** si nécessaire  
-7. **Tests de validation**  
+- `.ovf` + `.vmdk` (+ parfois `.mf`)  
+ou  
+- `.ova` (*archive unique*)  
 
 ---
 
-## 🌐 Configuration réseau des VM
+### B) Import dans ESXi
 
-Attribution des interfaces réseau :
+Dans **ESXi Web UI** :
 
-- **pfSense WAN** → Port Group `WAN`  
-- **pfSense LAN** → Port Group `LAN`  
-- **DC / APP / Client** → Port Group `LAN`  
+1. **Virtual Machines**  
+2. **Create / Register VM**  
+3. **Deploy a virtual machine from an OVF or OVA file**  
+4. Upload du `.ova` **ou** `.ovf` + `.vmdk`  
+5. Choix du **datastore**  
+6. **Network mapping** vers le bon Port Group  
+
+#### 🌐 Mapping réseau recommandé
+
+- pfSense WAN → `PG-WAN`  
+- pfSense LAN → `PG-LAN`  
+- DC / Debian / Client / Veeam → `PG-LAN`  
 
 ---
 
-## 🔎 Vérifications après migration
+### C) Vérifications avant démarrage
 
-Pour chaque machine :
+Avant le premier boot :
 
-- Ping vers la **passerelle**  
-- Ping vers le **contrôleur de domaine**  
-- **Résolution DNS** fonctionnelle  
-- **Accès Internet** validé  
-- **Accès intranet** opérationnel  
+- Vérifier **CPU / RAM**  
+- Vérifier le **type de carte réseau** (E1000E ou VMXNET3)  
+- Vérifier le **Port Group sélectionné**  
+
+---
+
+### D) Premier démarrage et tests rapides
+
+Après démarrage :
+
+- Vérifier l’**adresse IP**  
+- Tester la **connectivité réseau**  
+- Vérifier les **services critiques**  
+
+---
+
+## ✅ Tests de validation après migration
+
+### 🔥 pfSense
+- Interfaces **WAN / LAN** correctement détectées  
+- IP LAN conforme (ex. `192.168.11.1`)  
+- **NAT fonctionnel**  
+- Règle **LAN → Internet** opérationnelle  
+- Test : **ping Internet**  
+
+### 🏢 DC1 / DC2
+- IP **statique correcte**  
+- **DNS configuré**  
+- Services **Active Directory démarrés**  
+- Ping **LAN OK**  
+- **Réplication AD fonctionnelle**  
+
+### 🐧 Debian (NGINX)
+- IP correcte  
+- **DNS interne OK**  
+- **NGINX actif**  
+- Accès intranet depuis le **client**  
+
+### 🟩 Client Windows
+- IP via **DHCP**  
+- **Connexion au domaine**  
 - **GPO appliquées**  
-- **Réplication AD** fonctionnelle  
+- Accès intranet fonctionnel  
 
 ---
 
-## 🧪 Tests globaux
+## 🧯 Incidents fréquents et causes probables
 
-### Checklist complète
+### pfSense : WAN / LAN inversés
+**Cause :** changement de NIC ou MAC à l’import.  
+➡️ **Solution :** réassocier les interfaces dans pfSense.
 
-- **Active Directory** opérationnel  
-- **DNS primaire et secondaire** fonctionnels  
-- **DHCP** attribue correctement les adresses IP  
-- **pfSense** filtre correctement le trafic  
-- **Intranet** accessible  
-- Aucun **conflit IP**  
-- Aucune **VM isolée**  
+### Active Directory : erreurs liées au temps
+**Cause :** décalage horaire (**NTP**).  
+➡️ **Solution :** activer NTP sur ESXi et vérifier l’heure des DC.
+
+### Windows : carte réseau non reconnue
+**Cause :** type de NIC différent.  
+➡️ **Solution :** changer le type de NIC (E1000E / VMXNET3) et réinstaller **VMware Tools**.
 
 ---
 
-## 🧠 Analyse technique
+## 🧾 Journal de migration (à compléter)
 
-La migration vers **ESXi** permet :
+| VM          | Export | Import ESXi | Port Group        | Résultat | Notes |
+|-------------|--------|-------------|-------------------|----------|-------|
+| pfSense     |        |             | PG-WAN / PG-LAN   |          |       |
+| DC1         |        |             | PG-LAN            |          |       |
+| DC2         |        |             | PG-LAN            |          |       |
+| Debian APP  |        |             | PG-LAN            |          |       |
+| Client W11  |        |             | PG-LAN            |          |       |
+| Veeam       |        |             | PG-LAN            |          |       |
 
-- Une **gestion centralisée** des VM  
-- Un **meilleur contrôle des ressources**  
-- Une **isolation claire des flux réseau**  
-- Une **compatibilité native avec Veeam**  
-- Une **simulation fidèle d’un environnement d’entreprise**  
 
 ---
 
 ## 📌 Prochaine étape
 
-### Intégration de Veeam
+Une fois la migration terminée :
+
+### ✅ Intégration Veeam
 
 - Ajout de l’hôte **ESXi** dans Veeam  
 - Création d’un **job de sauvegarde**  
-- Test de **snapshot**  
-- Test de **restauration**  
-- Simulation de **PRA (Plan de Reprise d’Activité)**  
+- **Test de restauration**  
+- **Simulation PRA**  
+
+➡️ Voir le document associé : `05-integration-veeam.md`
