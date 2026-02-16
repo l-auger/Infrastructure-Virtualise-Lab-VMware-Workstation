@@ -164,6 +164,113 @@ Ce lab a pour objectif de :
 
 ---
 
+# 🧪 Infrastructure Virtualisée – Lab VMware
+
+## 📌 Présentation du projet
+
+(blabla actuel)
+
+---
+
+## 📌 État du projet
+
+- Phase 1 : Infrastructure sous VMware Workstation ✅
+- Phase 2 : Migration vers VMware ESXi 🚧
+
+---
+
+# 🔄 Phase 2 – Migration vers ESXi
+
+📌 Pourquoi migrer ?
+
+L’environnement initial était basé sur VMware Workstation, adapté au lab local.
+
+Cependant, certaines limitations existent :
+
+- Pas de gestion centralisée type hyperviseur
+- Support limité pour Veeam
+- Pas de vraie architecture “production-like”
+- Pas de gestion avancée des vSwitch
+
+👉 La migration vers VMware ESXi 8.x permet de se rapprocher d’une infrastructure entreprise réelle.
+
+🖥️ Hyperviseur – SVL-PS-HV-01
+
+Hyperviseur : VMware ESXi 8.x
+Type : Bare-metal
+Installation : SSD dédié
+Accès : Interface Web (https://IP_ESXI)
+
+⚙️ Préparation matérielle
+
+Machine hôte :
+
+CPU : AMD Ryzen 7 7800X3D
+
+RAM : 64 Go
+
+Virtualisation : Activée (SVM)
+
+IOMMU : Activé
+
+CSM : Disabled
+
+Secure Boot : Disabled
+
+TPM : Activé (optionnel)
+
+🌐 Nouvelle architecture
+
+ESXi héberge désormais :
+
+- SVL-PS-DC1-01
+- SVL-PS-DC2-01
+- SVL-PS-FWL-01
+- SVL-PS-APP-01
+- SVL-PS-VEEAM-01
+- CL-TS-01
+
+Toutes les VM sont maintenant gérées par :
+
+- vSwitch interne
+- Port groups
+- Datastore centralisé
+
+💾 Intégration Veeam
+
+La migration permet :
+
+- Sauvegarde VM complète
+- Snapshot cohérent
+- Restauration granulaire
+- Test de PRA
+
+Contrairement à Workstation, ESXi expose l’API VMware utilisée par Veeam.
+
+🔐 Sécurité hyperviseur
+
+- Mot de passe root fort
+- SSH désactivé
+- Accès limité au LAN
+- Sauvegarde config ESXi
+- Isolation réseau via vSwitch
+
+📈 Évolution pédagogique
+
+Cette migration marque :
+
+Workstation → Hyperviseur entreprise simulé
+
+Objectifs :
+
+- Monter en compétences virtualisation
+- Comprendre architecture hyperviseur
+- Tester sauvegardes réelles
+- Approfondir réseau virtuel
+- Simuler PRA
+
+---
+
 ## 👤 Auteur
 
 **Loïck**  
