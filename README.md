@@ -162,13 +162,6 @@ Ce lab a pour objectif de :
 - Approfondir la gestion réseau et la sécurité
 - Apprendre à **documenter proprement une infrastructure technique**
 
----
-
-# 🧪 Infrastructure Virtualisée – Lab VMware
-
-## 📌 Présentation du projet
-
-(blabla actuel)
 
 ---
 
