@@ -1,19 +1,13 @@
-# Veeam Backup – Sauvegarde de l’infrastructure
+## 🛠️ Phase 2 : Intégration de Veeam et migration vers ESXi
 
-Ce dossier décrit la mise en place d’une solution de sauvegarde basée sur **Veeam Backup**.
+Une fois l’hyperviseur **VMware ESXi 8.0.2** correctement configuré et sécurisé, la migration de l’ensemble des **machines virtuelles existantes** vers cette plateforme sera engagée.  
 
-L’objectif est d’assurer la protection des machines virtuelles critiques du laboratoire.
+L’objectif de cette phase est de **déployer l’infrastructure complète sur un hyperviseur bare-metal professionnel**, afin de simuler un **environnement de production en entreprise** et de centraliser la gestion des ressources virtualisées.
 
-## Rôle de la solution
+Dans un second temps, la solution **Veeam Backup & Replication** sera intégrée afin de :
 
-- Sauvegarde des contrôleurs de domaine
-- Sauvegarde des serveurs critiques
-- Restauration en cas d’incident
+- réaliser des **sauvegardes complètes de l’hyperviseur et des machines virtuelles**  
+- mettre en œuvre une **stratégie de sauvegarde cohérente**, inspirée des bonnes pratiques en production  
+- permettre des **tests de restauration** et la **simulation d’un Plan de Reprise d’Activité (PRA)**  
 
-## Principes appliqués
-
-- Sauvegardes régulières
-- Séparation des données de production et de sauvegarde
-- Respect des bonnes pratiques de continuité de service
-
-Cette solution permet de simuler un plan de sauvegarde réaliste en environnement PME.
+Cette étape constitue l’aboutissement du projet, avec la mise en place d’une **infrastructure virtualisée complète, centralisée, sécurisée et sauvegardée**, conforme aux standards d’une **architecture d’entreprise**.
