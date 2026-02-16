@@ -1,33 +1,45 @@
-# 🧪 Infrastructure Virtualisée – Lab VMware Workstation
+# 🧪 Infrastructure virtualisée – Lab systèmes & réseaux
 
 ## 📌 Présentation du projet
 
-Ce projet correspond à un **laboratoire d’infrastructure virtualisée** réalisé dans un objectif de **formation, de test et de montée en compétences** autour des environnements systèmes et réseaux en entreprise.
+Ce projet correspond à un **laboratoire d’infrastructure virtualisée avancé**, réalisé dans un objectif de **montée en compétences en administration systèmes et réseaux**.
 
-L’infrastructure est déployée sur **VMware Workstation (dernière version)** et repose sur un **segment LAN dédié**, permettant à l’ensemble des machines virtuelles de communiquer entre elles au sein d’un même réseau local, sans utiliser les VMnet par défaut.
+L’objectif est de concevoir, déployer et faire évoluer une **infrastructure d’entreprise réaliste**, incluant :
 
-Ce lab simule une **infrastructure d’entreprise classique**, incluant :
-- Un Active Directory redondé
-- Un DNS et DHCP en haute disponibilité
-- Un pare-feu pfSense en passerelle
-- Un poste client joint au domaine
-- Des briques futures (serveur applicatif, sauvegarde)
+- Un **Active Directory redondé**
+- **DNS et DHCP** en haute disponibilité
+- Un **pare-feu centralisé (pfSense)**
+- Un **poste client joint au domaine**
+- Un **serveur applicatif Linux** (Debian + NGINX)
+- Une **solution de sauvegarde** (Veeam)
+- Une migration vers un **hyperviseur bare-metal** (VMware ESXi)
 
----
-## 🏗️ Architecture de l’infrastructure
-
-![Aperçu du projet](00-architecture/schema-reseau.png)
+👉 Ce lab simule une **architecture PME complète**, avec segmentation réseau, sauvegarde et **tests de reprise après incident**.
 
 ---
+
+## 📌 État du projet
+
+| Phase   | Description                              | Statut        |
+|---------|------------------------------------------|---------------|
+| Phase 1 | Infrastructure sous VMware Workstation   | ✅ Terminée    |
+| Phase 2 | Migration vers VMware ESXi 8.x           | 🚧 En cours    |
+| Phase 3 | Intégration Veeam & PRA                  | 🔄 En déploiement |
+
+---
+
+# 🏗️ Phase 1 – Infrastructure sous VMware Workstation
 
 ## 🖥️ Environnement technique
 
-- **Plateforme de virtualisation** : VMware Workstation
-- **Type d’environnement** : Lab / environnement de test
-- **Réseau** :
-  - Segment LAN personnalisé
-  - Toutes les VM connectées au même LAN
-  - Accès Internet exclusivement via le pare-feu
+- **Plateforme** : VMware Workstation  
+- **Type** : Lab local  
+
+### Réseau
+
+- Segment **LAN personnalisé**
+- Toutes les VM sur le **même réseau interne**
+- Accès Internet **uniquement via pfSense**
 
 ---
 
@@ -35,135 +47,199 @@ Ce lab simule une **infrastructure d’entreprise classique**, incluant :
 
 ### 🔥 Pare-feu – `SVL-PS-FWL-01`
 
-- **OS** : pfSense
-- **Version** : 2.8.0
-- **Rôle** :
-  - Passerelle réseau du LAN
-  - NAT
-  - Filtrage firewall
-  - Point de sortie Internet unique
+- **OS** : pfSense 2.8.0  
 
-**Interfaces réseau :**
-- **WAN** : `192.168.56.22/24`
-- **LAN** : `192.168.11.1/24`
+**Rôle :**
 
-L’ensemble du trafic sortant du LAN transite obligatoirement par ce pare-feu, permettant un **contrôle centralisé de la sécurité réseau**.
+- Passerelle LAN  
+- NAT  
+- Filtrage firewall  
+- Contrôle centralisé des flux  
+
+**Interfaces :**
+
+- **WAN** : `192.168.56.22/24`  
+- **LAN** : `192.168.11.1/24`  
+
+👉 Tout le trafic sortant **transite par le pare-feu**.
 
 ---
-
 
 ## 🗄️ Machines virtuelles
 
-### 🟦 `SVL-PS-DC1-01` – Windows Server 2025 (Contrôleur de domaine)
+### 🟦 `SVL-PS-DC1-01` — Windows Server 2025
 
-- **OS** : Windows Server 2025
-- **Rôles installés** :
-  - Active Directory Domain Services (AD DS)
-  - DNS (primaire)
-  - DHCP (failover)
-
-Ce serveur assure le rôle de **contrôleur de domaine principal** et héberge les services critiques du domaine.
+- **AD DS**
+- **DNS primaire**
+- **DHCP (failover)**
+- Contrôleur de domaine **principal**
 
 ---
 
-### 🟦 `SVL-PS-DC2-01` – Windows Server 2025 (Contrôleur de domaine secondaire)
+### 🟦 `SVL-PS-DC2-01` — Windows Server 2025
 
-- **OS** : Windows Server 2025
-- **Rôles installés** :
-  - AD DS (réplication)
-  - DNS (secondaire)
-  - DHCP (failover)
-
-**Fonctionnement :**
-- Synchronisation complète avec `SVL-PS-DC1-01`
-- Redondance DNS et DHCP assurée
-- Continuité de service en cas de panne du DC principal
-
-Le serveur DNS secondaire est configuré avec un **redirecteur externe (8.8.8.8)** afin de garantir la résolution de noms même en cas de défaillance interne.
+- **AD DS (réplication)**
+- **DNS secondaire**
+- **DHCP (failover)**
+- **Redondance** et continuité de service
 
 ---
 
-### 🟩 `CL-TS-01` – Poste client Windows 11
+### 🟩 `CL-TS-01` — Windows 11
 
-- **OS** : Windows 11
-- **Rôle** : Poste client de test utilisateur
+- Joint au **domaine**
+- IP via **DHCP**
+- Tests **GPO validés**
+- Résolution **DNS fonctionnelle**
 
-**Fonctionnalités validées :**
-- Jonction **manuelle** au domaine Active Directory
-- Attribution IP via DHCP
-- Résolution DNS fonctionnelle
-- Communication complète avec les contrôleurs de domaine
+**Exemple de GPO testée :**
 
-**Tests réalisés :**
-- Déploiement et application de GPO
-- Exemple de GPO testée :
-  - Blocage de l’accès au panneau de configuration  
-  ➜ Objectif : valider la propagation correcte des stratégies de groupe dans le LAN.
+- Blocage du **panneau de configuration**
 
 ---
 
-### 🟥 `SVL-PS-APP-01` – Debian 12 (Serveur applicatif – prévu)
+### 🟥 `SVL-PS-APP-01` — Debian 12
 
-- **OS** : Debian 12
-- **État actuel** : VM installée mais non encore exploitée
+Serveur applicatif hébergeant un **intranet via NGINX**.
 
-**Objectifs futurs :**
-- Déploiement d’un serveur applicatif
-- Tests de déploiement d’applications
-- Accès aux applications depuis le poste client `CL-TS-01`
-- Étude du déploiement d’icônes et services côté utilisateur
+**Objectifs pédagogiques :**
 
-Cette machine constituera la **brique applicative** du lab.
-
----
-
-### 🟨 `SVL-PS-VEEAM-01` – Serveur de sauvegarde (prévu)
-
-- **Solution** : Veeam Backup
-- **État actuel** : VM déployée mais non configurée
-
-**Objectifs futurs :**
-- Mise en place de sauvegardes des machines virtuelles
-- Tests de stratégies de sauvegarde
-- Tests de restauration (VM complète / fichiers)
+- Gestion des **permissions Linux**
+- Séparation **utilisateur système / service**
+- Diagnostic via **logs**
+- Tests **réseau**
+- **Sécurisation** du service web
 
 ---
 
-## 🔧 Configuration des ressources
+### 🟨 `SVL-PS-VEEAM-01`
 
-Les machines virtuelles ont été configurées avec des **ressources volontairement confortables** afin de faciliter les phases de test et de manipulation.
+Serveur de **sauvegarde**.
 
-⚠️ Une phase d’optimisation est prévue :
-- Réduction progressive des ressources CPU / RAM
-- Ajustement du stockage
-- Objectif : se rapprocher d’un environnement réaliste en conditions de production
+**Objectifs :**
 
----
-
-## 🚀 Évolutions prévues
-
-- Configuration complète de `SVL-PS-VEEAM-01`
-- Mise en production du serveur applicatif `SVL-PS-APP-01`
-- Ajout de documentation détaillée par machine virtuelle
-- Ajout de captures d’écran (AD, DNS, DHCP, GPO, pfSense)
-- Tests de sécurité réseau
-- Renforcement des règles firewall
-- Publication du projet sur LinkedIn
+- Sauvegarde **complète des VM**
+- Tests de **restauration**
+- Simulation de **PRA**
 
 ---
 
-## 📎 Objectif pédagogique
+# 🔄 Phase 2 – Migration vers VMware ESXi 8.x
 
-Ce lab a pour objectif de :
-- Comprendre les **fondamentaux d’une infrastructure d’entreprise**
-- Mettre en œuvre la **redondance et la haute disponibilité**
-- Manipuler Active Directory, DNS, DHCP et GPO
-- Approfondir la gestion réseau et la sécurité
-- Apprendre à **documenter proprement une infrastructure technique**
+## 📌 Pourquoi migrer ?
+
+L’environnement sous **VMware Workstation** présentait plusieurs limitations :
+
+- Pas d’**hyperviseur dédié**
+- Pas d’**API VMware exploitable** pour Veeam
+- Réseau virtuel **simplifié**
+- Architecture peu représentative d’une **production réelle**
+
+👉 La migration vers **ESXi** permet une architecture **bare-metal** alignée avec les **standards entreprise**.
 
 ---
 
-## 👤 Auteur
+## 🖥️ Hyperviseur – `SVL-PS-HV-01`
+
+- **Hyperviseur** : VMware ESXi 8.x  
+- **Type** : Bare-metal  
+- **Installation** : SSD dédié  
+- **Accès** : Interface Web sécurisée  
+- **Gestion** : vSwitch, Port Groups, Datastore centralisé  
+
+---
+
+## ⚙️ Préparation matérielle
+
+**Machine hôte :**
+
+- **CPU** : AMD Ryzen 7 7800X3D  
+- **RAM** : 64 Go  
+- **SVM** : Activé  
+- **IOMMU** : Activé  
+- **CSM** : Disabled  
+- **Secure Boot** : Disabled  
+- **TPM** : Activé (optionnel)  
+
+---
+
+## 🌐 Nouvelle architecture virtualisée
+
+ESXi héberge :
+
+- `SVL-PS-DC1-01`
+- `SVL-PS-DC2-01`
+- `SVL-PS-FWL-01`
+- `SVL-PS-APP-01`
+- `SVL-PS-VEEAM-01`
+- `CL-TS-01`
+
+**Gestion via :**
+
+- vSwitch  
+- Port Groups  
+- Snapshots  
+- API VMware  
+
+---
+
+## 💾 Intégration Veeam
+
+La migration vers **ESXi** permet :
+
+- Sauvegarde **complète des VM**
+- **Snapshots cohérents**
+- **Restauration granulaire**
+- Simulation de **PRA**
+- Exploitation des **API VMware**
+
+👉 Contrairement à Workstation, **ESXi expose les mécanismes nécessaires à une sauvegarde professionnelle**.
+
+---
+
+## 🔐 Sécurité hyperviseur
+
+- Mot de passe **root fort**
+- **SSH désactivé** par défaut
+- Accès restreint au **LAN**
+- Sauvegarde de la **configuration ESXi**
+- Segmentation réseau via **vSwitch**
+- Isolation des flux via **pfSense**
+
+---
+
+# 📈 Objectifs pédagogiques
+
+Ce lab permet de :
+
+- Comprendre une **architecture d’entreprise complète**
+- Mettre en œuvre la **redondance AD / DNS / DHCP**
+- Déployer un **serveur Linux sécurisé**
+- Configurer un **pare-feu**
+- Implémenter une **stratégie de sauvegarde**
+- Simuler un **PRA**
+- Approfondir la **virtualisation bare-metal**
+
+---
+
+# 🎯 Compétences mises en œuvre
+
+- Administration **Windows Server**
+- **Active Directory**
+- **DNS / DHCP**
+- **Linux (Debian)**
+- **NGINX**
+- **pfSense**
+- **VMware Workstation**
+- **VMware ESXi**
+- **Veeam Backup & Replication**
+- **Diagnostic & troubleshooting**
+- **Documentation technique**
+
+---
+
+# 👤 Auteur
 
 **Loïck**  
-Projet personnel de laboratoire – Systèmes & Réseaux
+Projet personnel – **Administration systèmes & réseaux**  
+Laboratoire d’apprentissage **avancé**
