@@ -1,197 +1,162 @@
-# 🧪 Infrastructure Virtualisée – Lab VMware Workstation
+🧪 Infrastructure Virtualisée – Lab Systèmes & Réseaux
+📌 Présentation du projet
 
-## 📌 Présentation du projet
+Ce projet correspond à un laboratoire d’infrastructure virtualisée réalisé dans un objectif de formation, de test et de montée en compétences autour des environnements systèmes et réseaux en entreprise.
 
-Ce projet correspond à un **laboratoire d’infrastructure virtualisée** réalisé dans un objectif de **formation, de test et de montée en compétences** autour des environnements systèmes et réseaux en entreprise.
+L’objectif est de simuler une infrastructure d’entreprise réaliste, en reproduisant :
 
-L’infrastructure est déployée sur **VMware Workstation (dernière version)** et repose sur un **segment LAN dédié**, permettant à l’ensemble des machines virtuelles de communiquer entre elles au sein d’un même réseau local, sans utiliser les VMnet par défaut.
+Un Active Directory redondé
 
-Ce lab simule une **infrastructure d’entreprise classique**, incluant :
-- Un Active Directory redondé
-- Un DNS et DHCP en haute disponibilité
-- Un pare-feu pfSense en passerelle
-- Un poste client joint au domaine
-- Un serveur applicatif nginx hébergant l'intranet
-- Des briques futures (sauvegarde)
+DNS et DHCP en haute disponibilité
 
----
-## 🏗️ Architecture de l’infrastructure
+Un pare-feu en passerelle (pfSense)
 
-![Aperçu du projet](00-architecture/schema-reseau.png)
+Un poste client joint au domaine
 
----
+Un serveur applicatif Debian (NGINX – Intranet)
 
-## 🖥️ Environnement technique
+Une solution de sauvegarde (Veeam)
 
-- **Plateforme de virtualisation** : VMware Workstation
-- **Type d’environnement** : Lab / environnement de test
-- **Réseau** :
-  - Segment LAN personnalisé
-  - Toutes les VM connectées au même LAN
-  - Accès Internet exclusivement via le pare-feu
+Une évolution vers un hyperviseur bare-metal (ESXi)
 
----
+📌 État du projet
 
-## 🌐 Architecture réseau
+✅ Phase 1 : Infrastructure sous VMware Workstation
 
-### 🔥 Pare-feu – `SVL-PS-FWL-01`
+🚧 Phase 2 : Migration vers VMware ESXi 8.x
 
-- **OS** : pfSense
-- **Version** : 2.8.0
-- **Rôle** :
-  - Passerelle réseau du LAN
-  - NAT
-  - Filtrage firewall
-  - Point de sortie Internet unique
+🏗️ Phase 1 – Infrastructure sous VMware Workstation
+🖥️ Environnement technique
 
-**Interfaces réseau :**
-- **WAN** : `192.168.56.22/24`
-- **LAN** : `192.168.11.1/24`
+Plateforme de virtualisation : VMware Workstation
 
-L’ensemble du trafic sortant du LAN transite obligatoirement par ce pare-feu, permettant un **contrôle centralisé de la sécurité réseau**.
+Type d’environnement : Lab local
 
----
+Réseau :
 
+Segment LAN personnalisé
 
-## 🗄️ Machines virtuelles
+Toutes les VM sur le même réseau interne
 
-### 🟦 `SVL-PS-DC1-01` – Windows Server 2025 (Contrôleur de domaine)
+Accès Internet exclusivement via pfSense
 
-- **OS** : Windows Server 2025
-- **Rôles installés** :
-  - Active Directory Domain Services (AD DS)
-  - DNS (primaire)
-  - DHCP (failover)
+🌐 Architecture réseau
 
-Ce serveur assure le rôle de **contrôleur de domaine principal** et héberge les services critiques du domaine.
+🔥 Pare-feu – SVL-PS-FWL-01
 
----
+OS : pfSense 2.8.0
 
-### 🟦 `SVL-PS-DC2-01` – Windows Server 2025 (Contrôleur de domaine secondaire)
+Rôle :
 
-- **OS** : Windows Server 2025
-- **Rôles installés** :
-  - AD DS (réplication)
-  - DNS (secondaire)
-  - DHCP (failover)
+Passerelle LAN
 
-**Fonctionnement :**
-- Synchronisation complète avec `SVL-PS-DC1-01`
-- Redondance DNS et DHCP assurée
-- Continuité de service en cas de panne du DC principal
+NAT
 
-Le serveur DNS secondaire est configuré avec un **redirecteur externe (8.8.8.8)** afin de garantir la résolution de noms même en cas de défaillance interne.
+Filtrage firewall
 
----
+Point de sortie Internet unique
 
-### 🟩 `CL-TS-01` – Poste client Windows 11
+Interfaces :
 
-- **OS** : Windows 11
-- **Rôle** : Poste client de test utilisateur
+WAN : 192.168.56.22/24
 
-**Fonctionnalités validées :**
-- Jonction **manuelle** au domaine Active Directory
-- Attribution IP via DHCP
-- Résolution DNS fonctionnelle
-- Communication complète avec les contrôleurs de domaine
+LAN : 192.168.11.1/24
 
-**Tests réalisés :**
-- Déploiement et application de GPO
-- Exemple de GPO testée :
-  - Blocage de l’accès au panneau de configuration  
-  ➜ Objectif : valider la propagation correcte des stratégies de groupe dans le LAN.
+Tout le trafic sortant du LAN transite par le pare-feu, permettant un contrôle centralisé.
 
----
+🗄️ Machines virtuelles
+🟦 SVL-PS-DC1-01 – Windows Server 2025
 
-### 🟥 `SVL-PS-APP-01` – Debian 12 (Serveur applicatif – prévu)
+AD DS
 
-- **OS** : Debian 12
-- **État actuel** : VM installée mais non encore exploitée
+DNS (primaire)
 
-**Objectifs futurs :**
-- Déploiement d’un serveur applicatif
-- Tests de déploiement d’applications
-- Accès aux applications depuis le poste client `CL-TS-01`
-- Étude du déploiement d’icônes et services côté utilisateur
+DHCP (failover)
 
-Cette machine constituera la **brique applicative** du lab.
+Contrôleur de domaine principal.
 
----
+🟦 SVL-PS-DC2-01 – Windows Server 2025
 
-### 🟨 `SVL-PS-VEEAM-01` – Serveur de sauvegarde (prévu)
+AD DS (réplication)
 
-- **Solution** : Veeam Backup
-- **État actuel** : VM déployée mais non configurée
+DNS (secondaire)
 
-**Objectifs futurs :**
-- Mise en place de sauvegardes des machines virtuelles
-- Tests de stratégies de sauvegarde
-- Tests de restauration (VM complète / fichiers)
+DHCP (failover)
 
----
+Assure la redondance et la continuité de service.
 
-## 🔧 Configuration des ressources
+🟩 CL-TS-01 – Windows 11
 
-Les machines virtuelles ont été configurées avec des **ressources volontairement confortables** afin de faciliter les phases de test et de manipulation.
+Poste client joint au domaine
 
-⚠️ Une phase d’optimisation est prévue :
-- Réduction progressive des ressources CPU / RAM
-- Ajustement du stockage
-- Objectif : se rapprocher d’un environnement réaliste en conditions de production
+IP via DHCP
 
----
+Tests GPO validés
 
-## 🚀 Évolutions prévues
+Résolution DNS fonctionnelle
 
-- Configuration complète de `SVL-PS-VEEAM-01`
-- Mise en production du serveur applicatif `SVL-PS-APP-01`
-- Ajout de documentation détaillée par machine virtuelle
-- Ajout de captures d’écran (AD, DNS, DHCP, GPO, pfSense)
-- Tests de sécurité réseau
-- Renforcement des règles firewall
-- Publication du projet sur LinkedIn
+Exemple GPO testée :
+Blocage du panneau de configuration.
 
----
+🟥 SVL-PS-APP-01 – Debian 12
 
-## 📎 Objectif pédagogique
+Serveur applicatif hébergeant un intranet via NGINX.
 
-Ce lab a pour objectif de :
-- Comprendre les **fondamentaux d’une infrastructure d’entreprise**
-- Mettre en œuvre la **redondance et la haute disponibilité**
-- Manipuler Active Directory, DNS, DHCP et GPO
-- Approfondir la gestion réseau et la sécurité
-- Apprendre à **documenter proprement une infrastructure technique**
+Objectifs :
 
+Hébergement web interne
 
----
+Tests de permissions Linux
 
-## 📌 État du projet
+Séparation utilisateur système / service
 
-- Phase 1 : Infrastructure sous VMware Workstation ✅
-- Phase 2 : Migration vers VMware ESXi 🚧
+Diagnostic via logs
 
----
+Tests réseau
 
-# 🔄 Phase 2 – Migration vers ESXi
+🟨 SVL-PS-VEEAM-01
 
+Serveur de sauvegarde.
+
+Objectifs :
+
+Sauvegarde VM complète
+
+Tests restauration
+
+Simulation PRA
+
+🔧 Configuration des ressources
+
+Les VM ont été configurées avec des ressources confortables pour faciliter les tests.
+
+Une optimisation progressive est prévue afin de se rapprocher d’un environnement production réaliste.
+
+🔄 Phase 2 – Migration vers VMware ESXi 8.x
 📌 Pourquoi migrer ?
 
-L’environnement initial était basé sur VMware Workstation, adapté au lab local.
+L’environnement Workstation présente certaines limitations :
 
-Cependant, certaines limitations existent :
+Pas d’hyperviseur centralisé
 
-- Pas de gestion centralisée type hyperviseur
-- Support limité pour Veeam
-- Pas de vraie architecture “production-like”
-- Pas de gestion avancée des vSwitch
+Support limité pour Veeam
 
-👉 La migration vers VMware ESXi 8.x permet de se rapprocher d’une infrastructure entreprise réelle.
+Pas d’API VMware exploitable
+
+Pas de gestion avancée des vSwitch
+
+Architecture peu représentative d’une production réelle
+
+La migration vers ESXi permet une architecture bare-metal alignée avec les standards entreprise.
 
 🖥️ Hyperviseur – SVL-PS-HV-01
 
 Hyperviseur : VMware ESXi 8.x
+
 Type : Bare-metal
+
 Installation : SSD dédié
+
 Accès : Interface Web (https://IP_ESXI)
 
 ⚙️ Préparation matérielle
@@ -202,7 +167,7 @@ CPU : AMD Ryzen 7 7800X3D
 
 RAM : 64 Go
 
-Virtualisation : Activée (SVM)
+Virtualisation SVM : Activée
 
 IOMMU : Activé
 
@@ -212,59 +177,82 @@ Secure Boot : Disabled
 
 TPM : Activé (optionnel)
 
-🌐 Nouvelle architecture
+🌐 Nouvelle architecture virtualisée
 
 ESXi héberge désormais :
 
-- SVL-PS-DC1-01
-- SVL-PS-DC2-01
-- SVL-PS-FWL-01
-- SVL-PS-APP-01
-- SVL-PS-VEEAM-01
-- CL-TS-01
+SVL-PS-DC1-01
 
-Toutes les VM sont maintenant gérées par :
+SVL-PS-DC2-01
 
-- vSwitch interne
-- Port groups
-- Datastore centralisé
+SVL-PS-FWL-01
+
+SVL-PS-APP-01
+
+SVL-PS-VEEAM-01
+
+CL-TS-01
+
+Gestion via :
+
+vSwitch
+
+Port Groups
+
+Datastore centralisé
+
+Snapshots
+
+API VMware
 
 💾 Intégration Veeam
 
-La migration permet :
+La migration vers ESXi permet :
 
-- Sauvegarde VM complète
-- Snapshot cohérent
-- Restauration granulaire
-- Test de PRA
+Sauvegarde VM complète
 
-Contrairement à Workstation, ESXi expose l’API VMware utilisée par Veeam.
+Snapshot cohérent
+
+Restauration granulaire
+
+Tests de PRA
+
+Exploitation de l’API VMware
+
+Contrairement à Workstation, ESXi expose les mécanismes nécessaires à une sauvegarde professionnelle.
 
 🔐 Sécurité hyperviseur
 
-- Mot de passe root fort
-- SSH désactivé
-- Accès limité au LAN
-- Sauvegarde config ESXi
-- Isolation réseau via vSwitch
+Mot de passe root fort
 
-📈 Évolution pédagogique
+SSH désactivé par défaut
 
-Cette migration marque :
+Accès restreint au LAN
 
-Workstation → Hyperviseur entreprise simulé
+Sauvegarde de la configuration ESXi
 
-Objectifs :
+Segmentation réseau via vSwitch
 
-- Monter en compétences virtualisation
-- Comprendre architecture hyperviseur
-- Tester sauvegardes réelles
-- Approfondir réseau virtuel
-- Simuler PRA
+📈 Objectifs pédagogiques
 
----
+Ce lab permet de :
 
-## 👤 Auteur
+Comprendre une architecture d’entreprise complète
 
-**Loïck**  
-Projet personnel de laboratoire – Systèmes & Réseaux
+Mettre en œuvre la redondance AD/DNS/DHCP
+
+Déployer un serveur Linux sécurisé
+
+Gérer un pare-feu
+
+Implémenter une stratégie de sauvegarde
+
+Simuler un Plan de Reprise d’Activité
+
+Approfondir la virtualisation bare-metal
+
+👤 Auteur
+
+Loïck
+Projet personnel – Systèmes & Réseaux
+Laboratoire d’apprentissage avancé
