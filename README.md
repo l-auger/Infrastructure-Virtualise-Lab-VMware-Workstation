@@ -11,7 +11,8 @@ Ce lab simule une **infrastructure d’entreprise classique**, incluant :
 - Un DNS et DHCP en haute disponibilité
 - Un pare-feu pfSense en passerelle
 - Un poste client joint au domaine
-- Des briques futures (serveur applicatif, sauvegarde)
+- Un serveur applicatif nginx hébergant l'intranet
+- Des briques futures (sauvegarde)
 
 ---
 ## 🏗️ Architecture de l’infrastructure
