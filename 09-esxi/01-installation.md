@@ -62,7 +62,7 @@ L’environnement sous **VMware Workstation** présentait plusieurs limites :
 
 ### 📥 Préparation
 
-- ISO **VMware ESXi 8.x** téléchargée depuis VMware  
+- ISO **VMware ESXi 8.0.2** téléchargée depuis VMware  
 - Clé USB bootable créée  
 - Installation prévue sur un **SSD dédié**  
 
