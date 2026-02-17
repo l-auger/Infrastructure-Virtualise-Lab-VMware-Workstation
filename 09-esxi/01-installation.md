@@ -2,11 +2,11 @@
 
 ## 🎯 Objectif
 
-Mettre en place un hyperviseur **bare-metal** afin de :
+Mettre en place un **hyperviseur bare-metal** afin de :
 
-- Se rapprocher d’une architecture d’entreprise réelle  
-- Permettre l’intégration de **Veeam**  
-- Centraliser la gestion des machines virtuelles  
+- Se rapprocher d’une **architecture d’entreprise réelle**  
+- Centraliser la **gestion des machines virtuelles**  
+- Préparer l’**intégration future de Veeam**  
 - Remplacer **VMware Workstation** comme couche de virtualisation  
 
 ---
@@ -15,13 +15,13 @@ Mettre en place un hyperviseur **bare-metal** afin de :
 
 L’environnement sous **VMware Workstation** présentait plusieurs limites :
 
-- Dépendance au système hôte Windows  
-- Absence de vraie séparation hyperviseur / OS  
-- Pas d’API VMware exploitable pour **Veeam**  
-- Réseau virtuel simplifié  
-- Pas d’administration centralisée de type entreprise  
+- Dépendance au **système hôte Windows**  
+- Absence de réelle séparation **hyperviseur / OS**  
+- Pas d’**API VMware exploitable** pour des sauvegardes professionnelles  
+- Réseau virtuel **simplifié**  
+- Absence d’**administration centralisée** de type entreprise  
 
-👉 **ESXi permet une approche plus professionnelle et réaliste.**
+👉 **ESXi** permet une approche plus **professionnelle, isolée et réaliste**.
 
 ---
 
@@ -39,22 +39,22 @@ L’environnement sous **VMware Workstation** présentait plusieurs limites :
 
 ### 🔧 Configuration BIOS
 
-**Paramètres activés :**
-
-| Paramètre     | État     |
-|---------------|----------|
-| SVM Mode      | Enabled  |
-| IOMMU         | Enabled  |
-| CSM           | Disabled |
-| Secure Boot   | Disabled |
-| TPM           | Enabled (optionnel) |
+| Paramètre   | État     |
+|------------|----------|
+| SVM Mode   | Enabled  |
+| IOMMU      | Enabled  |
+| CSM        | Disabled |
+| Secure Boot| Disabled |
+| TPM        | Enabled (optionnel) |
 
 ### 🎯 Pourquoi ces réglages ?
 
-- **SVM** → Active la virtualisation matérielle AMD  
-- **IOMMU** → Gestion avancée des périphériques  
-- **CSM Disabled** → Démarrage UEFI propre  
-- **Secure Boot Disabled** → Évite les conflits de pilotes ESXi  
+- **SVM** → active la virtualisation matérielle AMD  
+- **IOMMU** → permet une gestion avancée des périphériques  
+- **CSM Disabled** → garantit un démarrage **UEFI natif**  
+- **Secure Boot Disabled** → évite les conflits de signature de pilotes ESXi  
+
+Ces paramètres assurent une **compatibilité complète avec ESXi 8.x**.
 
 ---
 
@@ -63,19 +63,19 @@ L’environnement sous **VMware Workstation** présentait plusieurs limites :
 ### 📥 Préparation
 
 - ISO **VMware ESXi 8.0.2** téléchargée depuis VMware  
-- Clé USB bootable créée  
+- **Clé USB bootable** créée  
 - Installation prévue sur un **SSD dédié**  
 
 ---
 
-### 🛠 Étapes réalisées
+### 🛠 Étapes d’installation
 
-1. Boot sur la clé USB  
-2. Sélection du disque SSD cible  
-3. Configuration du clavier (**⚠️ QWERTY détecté**)  
-4. Définition du mot de passe **root**  
-5. Installation complète  
-6. Redémarrage de l’hôte  
+1. Boot sur la **clé USB**  
+2. Sélection du **disque SSD cible**  
+3. Configuration du **clavier** (⚠️ QWERTY détecté)  
+4. Définition du **mot de passe root**  
+5. **Installation complète**  
+6. **Redémarrage** de l’hôte  
 
 ---
 
@@ -83,30 +83,32 @@ L’environnement sous **VMware Workstation** présentait plusieurs limites :
 
 Un **mot de passe root fort** a été défini.
 
-**⚠️ Incident rencontré :**
+#### ⚠️ Incident rencontré
 
 Le mot de passe a été saisi en **QWERTY** lors de l’installation,  
-provoquant un échec de connexion sur l’interface Web (**AZERTY côté client**).
+provoquant un **échec de connexion à l’interface Web** (poste client en AZERTY).
 
-**Résolution :**
+#### ✅ Résolution
 
-- Vérification du layout clavier  
-- Nouvelle saisie correcte du mot de passe  
-- Connexion Web validée  
+- Vérification du **layout clavier**  
+- Nouvelle saisie correcte du **mot de passe**  
+- **Connexion Web validée**  
 
 ---
 
 ## 🌐 3️⃣ Configuration réseau initiale
 
-Accès via la console **DCUI (F2)**.
+Configuration réalisée via la **console DCUI (F2)**.
 
-### Configuration appliquée
+### Paramètres appliqués
 
-- Adresse **IP statique** définie  
+- **Adresse IP statique** définie  
 - **Masque réseau** configuré  
 - **Passerelle par défaut** renseignée  
-- **DNS** configuré  
+- **DNS temporaire** configuré  
 - **Hostname :** `SVL-PS-HV-01`  
+
+⚠️ À ce stade, le **réseau de management** reste **indépendant** des futures machines virtuelles.
 
 ---
 
@@ -118,7 +120,7 @@ Depuis un poste client :
 https://IP_ESXI
 ```
 
-👉 Connexion à la **Web UI ESXi réussie**.
+👉 **Connexion à la Web UI ESXi validée.**
 
 ---
 
@@ -126,31 +128,41 @@ https://IP_ESXI
 
 ### Vérifications effectuées
 
-- Accès à l’interface Web **OK**  
-- **Datastore** détecté  
-- **vSwitch0** créé automatiquement  
-- Carte réseau reconnue  
-- Version **ESXi confirmée**  
+- Accès à l’**interface Web fonctionnel**  
+- **Datastore local détecté**  
+- **vSwitch0 créé automatiquement**  
+- **Carte réseau reconnue**  
+- **Version ESXi confirmée**  
+- **Redémarrage test validé**  
 
 ---
 
 ## 🧠 Analyse technique
 
-L’installation **bare-metal** permet :
+L’installation **bare-metal** apporte :
 
-- Indépendance totale du système hôte  
-- Accès direct au matériel  
-- Meilleure gestion des ressources  
-- Exploitation des **API VMware**  
-- Intégration future avec **Veeam**  
+- Une **indépendance totale** vis-à-vis du système hôte  
+- Un **accès direct au matériel**  
+- Une **stabilité accrue**  
+- Une **meilleure gestion des ressources**  
+- Une **base saine** pour l’architecture virtuelle  
+
+👉 L’hyperviseur est désormais **prêt pour la configuration avancée**.
 
 ---
 
-## 📌 Prochaine étape
+## 📌 Étape suivante dans la documentation
 
-Configuration de l’infrastructure virtuelle :
+Le document suivant :
 
-- Réseau virtuel  
-- Port Groups  
-- Plan d’adressage IP  
-- Migration des VM depuis **VMware Workstation**  
+```
+02_configuration_initiale_esxi.md
+```
+
+Traite de :
+
+- La **sécurisation du réseau de management**  
+- La **sauvegarde de la configuration ESXi**  
+- La **vérification des services**  
+- La **préparation du réseau virtuel**  
+- La création des **premiers vSwitch et Port Groups**  
