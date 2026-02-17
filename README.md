@@ -1,150 +1,129 @@
-# 🧪 Infrastructure virtualisée – Lab systèmes & réseaux (Phase 2)
+# 🚀 Évolution du laboratoire – Architecture hybride Windows / Linux
 
-## 📌 Présentation
+## 🎯 Objectif de cette nouvelle phase
 
-Ce dépôt documente la **phase 2** d’un laboratoire d’infrastructure virtualisée, réalisé dans un objectif de :
+Après la mise en place d’une **infrastructure ESXi minimaliste**,  
+le projet évolue vers un laboratoire orienté :
 
-- montée en compétences en **administration systèmes et réseaux**
-- mise en place d’une **virtualisation bare-metal réaliste**
-- expérimentation autour de **Linux serveur, NGINX et sauvegarde**
-- reproduction d’un **cas d’usage proche de la production**
+- **déploiement applicatif réel**
+- **automatisation**
+- **conteneurisation**
+- **orchestration moderne**
 
-La phase 1 (infrastructure PME complète sous VMware Workstation) est désormais **archivée**.  
-Cette phase 2 introduit une **architecture simplifiée, cohérente et exploitable**.
-
----
-
-# 🎯 Objectif de la phase 2
-
-Passer :
-
-- d’un **lab pédagogique complet mais lourd**
-- à une **infrastructure minimaliste réaliste**
-
-centrée sur :
-
-- **VMware ESXi 8.x bare-metal**
-- un **serveur Linux Debian 12 applicatif**
-- l’**hébergement web via NGINX**
-- une **stratégie de sauvegarde réelle (Veeam + NAS local)**
-- la **sécurisation et l’exploitation système**
-
-👉 L’objectif est de construire un **socle crédible d’infrastructure de production légère**.
+L’objectif est de manipuler des **technologies concrètement utilisées en entreprise**,  
+tout en conservant une architecture **simple, lisible et pédagogique**.
 
 ---
 
-# 🖥️ Hyperviseur
+# 🧱 Architecture cible
 
-## SVL-PS-HV-01 — VMware ESXi 8.0.2
+L’infrastructure reposera sur **plusieurs machines virtuelles hébergées sous ESXi** :
 
-- **Type** : bare-metal  
-- **Installation** : SSD dédié  
-- **Accès** : interface Web sécurisée  
-- **Réseau** : vSwitch + Port Groups  
-- **Stockage** : datastore local ESXi  
+## 🪟 Windows Server 2025 – Services d’infrastructure
 
-Cette base fournit :
+Une VM Windows sera conservée pour assurer les **services réseau essentiels** :
 
-- isolation matérielle complète  
-- stabilité supérieure à Workstation  
-- compatibilité native avec **Veeam**  
-- fondation pour une **exploitation réelle**
+- **DHCP**
+- **DNS**
 
----
+Rôle :
 
-# 🌐 Architecture actuelle
+- fournir la résolution de noms interne  
+- distribuer automatiquement les adresses IP  
+- simuler un **socle d’infrastructure entreprise minimal**
 
-## 🟥 SVL-PS-APP-01 — Debian 12
-
-### Rôle
-
-- serveur **Linux applicatif**
-- hébergement **NGINX (intranet / web)**
-- base de travail pour :
-  - sécurisation Linux  
-  - supervision future  
-  - sauvegarde Veeam  
-  - optimisation système  
-
-👉 Cette VM constitue désormais **le cœur unique du laboratoire**.
+👉 Aucun Active Directory complet n’est prévu,  
+afin de limiter la complexité et rester centré sur l’applicatif.
 
 ---
 
-# 💾 Sauvegarde & continuité
+## 🐧 Machines Linux – Couche applicative
 
-La stratégie de sauvegarde de la phase 2 repose sur :
+Le reste de l’infrastructure sera basé sur **Debian 12** :
 
-- **Veeam Backup & Replication**
-- sauvegarde **ciblée de la VM Debian**
-- stockage des sauvegardes sur :
-  - **NAS personnel local** (sauvegarde primaire)
-  - logique inspirée du **3-2-1** à terme
+### Rôles prévus
+
+- **serveur applicatif principal**
+- **nœud(s) Kubernetes**
+- **hébergement conteneurisé**
+- **tests de résilience et redéploiement**
+
+Cette approche permet de se rapprocher d’un environnement :
+
+> **Linux-first / cloud-native**, courant en production.
+
+---
+
+# 🧰 Technologies déployées
+
+## 🐳 Docker
+- conteneurisation des applications  
+- isolation des services  
+- déploiement rapide et reproductible  
+
+## ☸️ Kubernetes (k3s)
+- orchestration des conteneurs  
+- redémarrage automatique  
+- montée en charge  
+- exposition via Ingress  
+
+## 🤖 Ansible
+- installation automatisée des VM  
+- configuration système reproductible  
+- déploiement applicatif sans action manuelle  
+- logique **Infrastructure as Code**  
+
+---
+
+# 🌐 Cas d’usage applicatif
+
+Le laboratoire visera à déployer :
+
+- une **application web** (API ou site interne)
+- un **reverse proxy NGINX**
+- une **base de données conteneurisée**
+- éventuellement :
+  - supervision
+  - stockage persistant
+  - tests de reprise
 
 Objectif :
 
-> simuler une **stratégie de sauvegarde réelle** dans un contexte minimaliste.
+> manipuler un **cycle applicatif complet**  
+> déploiement → panne → redéploiement → sauvegarde.
 
 ---
 
-# 🔐 Sécurité mise en place
+# 💾 Sauvegarde
 
-## Hyperviseur ESXi
+La stratégie reposera sur :
 
-- mot de passe **root fort**
-- **SSH désactivé** par défaut
-- accès **limité au LAN**
-- sauvegarde de la **configuration ESXi**
-- isolation réseau via **vSwitch**
-
-## Serveur Debian
-
-- durcissement Linux progressif  
-- configuration sécurisée **NGINX**  
-- séparation des services  
-- base pour supervision et journalisation  
-
----
-
-# 📈 Objectifs pédagogiques
-
-Cette phase permet de travailler concrètement :
-
-- la **virtualisation bare-metal ESXi**
-- l’**administration Linux serveur**
-- l’**hébergement web sécurisé**
-- la **sauvegarde professionnelle avec Veeam**
-- la **continuité d’activité**
-- la **documentation technique d’infrastructure**
-
-👉 Approche volontairement **minimaliste mais réaliste**.
-
----
-
-# 🧠 Compétences mises en œuvre
-
-- VMware **ESXi**
-- Linux **Debian**
-- **NGINX**
 - **Veeam Backup & Replication**
-- réseau virtuel ESXi
-- sécurité système
-- diagnostic & troubleshooting
-- documentation d’architecture
+- sauvegarde des **VM critiques**
+- stockage sur :
+  - **NAS personnel local**
+  - évolution possible vers logique **3-2-1**
 
 ---
 
-# 🗺️ Historique du projet
+# 📈 Bénéfices pédagogiques
 
-| Phase | Description | Statut |
+Cette phase permet de :
+
+- combiner **infrastructure Windows minimale** et **écosystème Linux moderne**
+- comprendre les bases du **DevOps** et du **cloud-native**
+- manipuler **Docker, Kubernetes et Ansible** en conditions réelles
+- produire une **documentation technique crédible pour un portfolio**
+
+---
+
+# 🗺️ Position dans le projet global
+
+| Phase | Orientation | Statut |
 |-------|-------------|--------|
-| Phase 1 | Infrastructure PME complète sous VMware Workstation | ✅ Archivée |
-| Phase 2 | Architecture ESXi minimaliste centrée Linux | 🚧 En cours |
-| Phase 3 | Supervision, sauvegarde avancée, durcissement | 🔄 Prévue |
+| Phase 1 | Infrastructure PME complète sous Workstation | ✅ Terminée |
+| Phase 2 | ESXi minimaliste + Debian | 🚧 En cours |
+| Phase 3 | Architecture hybride + conteneurs + automatisation | 🔜 Démarrage |
 
----
-
-# 👤 Auteur
-
-**Loïck**  
-Projet personnel – Administration systèmes & réseaux  
-Laboratoire orienté **conditions réelles de production**
+Cette évolution constitue la **suite logique du laboratoire**  
+vers une infrastructure **moderne, automatisée et proche de la production**.
