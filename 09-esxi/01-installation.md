@@ -1,4 +1,4 @@
-# 🖥️ Installation de l’hyperviseur – VMware ESXi 8.x
+# 🖥️ Installation de l’hyperviseur – VMware ESXi 8.0.2
 
 ## 🎯 Objectif
 
