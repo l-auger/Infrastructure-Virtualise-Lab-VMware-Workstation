@@ -1,153 +1,57 @@
-# ⚙️ Configuration initiale – VMware ESXi 8.x
+# ⚙️ Configuration initiale et sécurisation d’ESXi
 
 ## 🎯 Objectif
 
-Sécuriser et préparer l’hyperviseur après installation afin de :
+Cette phase vise à :
 
-- Réduire la surface d’attaque  
-- Stabiliser l’environnement  
-- Préparer la production des VM  
-- Garantir une gestion propre et maintenable  
-
----
-
-## 🔐 1️⃣ Sécurisation de l’accès root
-
-### Configuration réalisée
-
-- Mot de passe **root fort**  
-- Accès Web uniquement via **HTTPS**  
-- Accès limité au **LAN**  
-- **Aucune exposition WAN**  
-
-### 🔎 Vérifications
-
-- Connexion Web fonctionnelle  
-- Aucune tentative d’accès externe détectée  
-- Adresse IP ESXi **non exposée sur le WAN**  
+- sécuriser l’accès à l’hyperviseur
+- stabiliser l’environnement de virtualisation
+- préparer l’hébergement des machines virtuelles critiques
 
 ---
 
-## 🛠 2️⃣ Désactivation des services inutiles
+## 🔐 Sécurisation des accès
 
-Par défaut, certains services peuvent être actifs.
+Plusieurs mesures sont appliquées :
 
-### Service SSH
+- définition d’un **mot de passe administrateur robuste**
+- limitation de l’accès à l’interface d’administration au **réseau local**
+- désactivation des services distants non nécessaires hors maintenance
+- sauvegarde de la **configuration ESXi**
 
-- Activé **temporairement** si nécessaire  
-- Désactivé après configuration  
-
-👉 En production, **SSH ne doit pas rester actif**.
-
-### Shell ESXi
-
-- Utilisé uniquement pour le **diagnostic**  
-- Désactivé hors période de maintenance  
+Ces actions réduisent la **surface d’exposition** de l’hyperviseur.
 
 ---
 
-## ⏱ 3️⃣ Configuration NTP (synchronisation horaire)
+## ⏱ Synchronisation temporelle
 
-### Pourquoi ?
+Une source de temps fiable est configurée afin de garantir :
 
-- **Active Directory** dépend fortement de l’heure  
-- Les certificats **HTTPS** utilisent le temps système  
-- Les **logs** doivent être cohérents  
+- la cohérence des journaux système
+- la validité des certificats
+- le bon fonctionnement des sauvegardes et restaurations
 
-### Action réalisée
-
-- Configuration d’un **serveur NTP**  
-- Synchronisation automatique activée  
-- Vérification de l’**heure système**  
+La synchronisation horaire constitue un prérequis essentiel  
+dans tout environnement virtualisé.
 
 ---
 
-## 🗂 4️⃣ Vérification du Datastore
+## 💾 Vérification du stockage
 
-### Points validés
+Le datastore local est contrôlé afin de valider :
 
-- Datastore local détecté  
-- **Espace disque suffisant**  
-- Aucun problème **SMART**  
-- Support **SSD reconnu correctement**  
-
----
-
-## 🌐 5️⃣ Vérification du réseau Management
-
-### Vérifications effectuées
-
-- **IP statique** fonctionnelle  
-- **Passerelle** correcte  
-- **DNS** opérationnel  
-- Ping vers la **passerelle OK**  
-- Ping vers le **DNS OK**  
+- sa détection correcte par ESXi
+- l’espace disponible pour les futures machines virtuelles
+- l’absence d’erreurs matérielles
 
 ---
 
-## 👤 6️⃣ Gestion des accès 
+## 🧪 Validation globale
 
-### Bonne pratique en entreprise
+L’environnement est considéré comme prêt lorsque :
 
-- Ne pas utiliser **root** pour toutes les opérations  
-- Créer un **utilisateur administrateur dédié**  
-- Attribuer un **rôle adapté**  
+- l’accès à l’interface Web est stable
+- aucune alerte critique n’est présente
+- les ressources CPU, mémoire et stockage sont opérationnelles
 
-Même si l’utilisation de root est acceptable en **lab**,  
-la logique **entreprise** est documentée.
-
----
-
-## 💾 7️⃣ Sauvegarde de la configuration ESXi
-
-### Bonne pratique
-
-- Sauvegarde de la **configuration de l’hyperviseur**  
-- Conservation **hors hyperviseur**  
-
-### Pourquoi ?
-
-En cas de panne :
-
-- Réinstallation rapide  
-- Restauration immédiate de la configuration  
-- **Gain de temps critique**  
-
----
-
-## 🧪 8️⃣ Vérification des ressources matérielles
-
-- **CPU reconnu correctement**  
-- Nombre de **cœurs validé**  
-- **RAM totale détectée**  
-- **Carte réseau identifiée**  
-- Aucune erreur **hardware**  
-
----
-
-## 🔎 9️⃣ Vérification des logs système
-
-### Objectif
-
-- S’assurer qu’aucune **erreur critique** n’est présente  
-- Vérifier l’absence de **warning matériel**  
-
----
-
-## 🧠 Analyse technique
-
-Cette phase permet :
-
-- De **sécuriser l’hyperviseur**  
-- D’éviter les **erreurs futures**  
-- De garantir la **stabilité des VM**  
-- D’adopter des **pratiques professionnelles**  
-
----
-
-## 📌 Prochaine étape
-
-- Configuration du **réseau virtuel**  
-- Création des **Port Groups**  
-- Déploiement de **pfSense**  
-- Début de la **migration des VM**  
+Cette étape marque la transition vers la **mise en place du réseau virtuel**.
