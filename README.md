@@ -49,7 +49,7 @@ phase-2-esxi
 
 Cette branche contient :
 
-- la **migration vers VMware ESXi 8.x bare-metal**
+- la **migration vers VMware ESXi 8.0.2 bare-metal**
 - la **simplification volontaire de l’infrastructure**
 - la conservation d’un **seul serveur Debian 12 applicatif**
 - la mise en place d’une **stratégie de sauvegarde réaliste**
@@ -93,7 +93,7 @@ Le dépôt est organisé en dossiers numérotés correspondant aux briques techn
 - `03-windows-server-2025` → Active Directory  
 - `04-windows-11-client` → poste client  
 - `05-debian-12` → serveur Linux applicatif  
-- `06-veeam-backup` → sauvegarde  
+- `06-veeam-backup` → sauvegarde sur ESXi 
 - `07-securite` → durcissement  
 - `08-evolutions` → perspectives  
 - `09-esxi` → **début de la transition vers la phase 2**
