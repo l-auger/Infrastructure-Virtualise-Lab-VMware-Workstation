@@ -1,177 +1,126 @@
 # 🧪 Infrastructure virtualisée – Lab systèmes & réseaux
 
-## 📌 Présentation du projet
+## 📌 Présentation
 
-Ce projet correspond à un **laboratoire d’infrastructure virtualisée avancé**, réalisé dans un objectif de **montée en compétences en administration systèmes et réseaux**.
+Ce dépôt documente un **laboratoire d’infrastructure virtualisée** réalisé dans un objectif de :
 
-L’objectif initial était de concevoir une **infrastructure PME complète** incluant :
+- montée en compétences en **administration systèmes et réseaux**
+- reproduction d’**architectures d’entreprise réalistes**
+- expérimentation autour de la **virtualisation, Linux et sauvegarde**
 
-- Active Directory redondé  
-- DNS / DHCP en haute disponibilité  
-- Pare-feu centralisé (**pfSense**)  
-- Poste client joint au domaine  
-- Serveur applicatif Linux (**Debian + NGINX**)  
-- Solution de sauvegarde (**Veeam**)  
-- Migration vers un hyperviseur **bare-metal VMware ESXi**
-
-👉 Suite à l’évolution du projet, seule la **brique applicative Linux** est désormais conservée et migrée vers ESXi,  
-le reste de l’infrastructure étant **décommissionné** afin de simplifier l’architecture et de se concentrer sur :
-
-- la virtualisation bare-metal  
-- l’hébergement applicatif Linux  
-- la sauvegarde ciblée  
-- la logique de production minimale réaliste  
+Le projet est organisé en **plusieurs phases évolutives** correspondant à l’évolution réelle du lab.
 
 ---
 
-## 📌 État du projet
+# 🔀 Organisation du projet par branches
+
+## 🌿 Branche principale – Infrastructure VMware Workstation (Phase 1)
+
+La branche actuelle correspond à la **première version complète du laboratoire**, basée sur :
+
+- **VMware Workstation**
+- une **architecture PME complète** :
+  - Active Directory redondé (DC1 / DC2)
+  - DNS / DHCP
+  - pare-feu **pfSense**
+  - client Windows joint au domaine
+  - serveur applicatif **Debian + NGINX**
+  - serveur de sauvegarde **Veeam**
+
+👉 Cette phase est **terminée** et conservée à des fins :
+
+- pédagogiques  
+- historiques  
+- documentaires  
+
+Elle représente la **fondation du projet**, mais **n’est plus l’architecture cible actuelle**.
+
+---
+
+## 🌿 Branche 2 – Architecture ESXi minimaliste (Phase 2)
+
+La suite du projet se poursuit sur une **nouvelle branche dédiée**.
+
+➡️ **Merci de basculer sur la branche :**
+
+```
+phase-2-esxi
+```
+
+Cette branche contient :
+
+- la **migration vers VMware ESXi 8.x bare-metal**
+- la **simplification volontaire de l’infrastructure**
+- la conservation d’un **seul serveur Debian 12 applicatif**
+- la mise en place d’une **stratégie de sauvegarde réaliste**
+- une approche **plus proche d’un environnement de production réel**
+
+### 🎯 Objectif de la phase 2
+
+Passer :
+
+- d’un **lab pédagogique complet**
+- à une **architecture minimaliste, crédible et exploitable**
+
+centrée sur :
+
+- **VMware ESXi**
+- **Linux serveur**
+- **NGINX**
+- **sauvegarde Veeam**
+- **NAS local**
+- **sécurité et exploitation système**
+
+---
+
+# 🧭 État global du projet
 
 | Phase | Description | Statut |
 |-------|-------------|--------|
 | Phase 1 | Infrastructure complète sous VMware Workstation | ✅ Terminée |
-| Phase 2 | Migration vers VMware ESXi 8.0.2 (Debian uniquement) | 🚧 En cours |
-| Phase 3 | Sauvegarde Veeam ciblée + optimisation | 🔄 À venir |
+| Phase 2 | Migration ESXi + Debian unique | 🚧 En cours |
+| Phase 3 | Sauvegarde avancée & optimisation | 🔄 À venir |
 
 ---
 
-# 🏗️ Phase 1 – Infrastructure sous VMware Workstation
+# 📚 Structure documentaire
 
-## 🖥️ Environnement technique initial
+Le dépôt est organisé en dossiers numérotés correspondant aux briques techniques :
 
-- **Plateforme** : VMware Workstation  
-- **Type** : Lab local complet  
-- **Réseau** :
-  - LAN personnalisé  
-  - Accès Internet via **pfSense**  
-  - Toutes les VM interconnectées  
+- `00-architecture` → vue d’ensemble  
+- `01-virtualisation-vmware-workstation` → hyperviseur Workstation  
+- `02-pfsense` → pare-feu  
+- `03-windows-server-2025` → Active Directory  
+- `04-windows-11-client` → poste client  
+- `05-debian-12` → serveur Linux applicatif  
+- `06-veeam-backup` → sauvegarde  
+- `07-securite` → durcissement  
+- `08-evolutions` → perspectives  
+- `09-esxi` → **début de la transition vers la phase 2**
 
-Cette phase avait pour objectif de **reproduire une PME complète**.
-
----
-
-## 🗄️ Machines virtuelles initiales
-
-- **DC1 / DC2** – Active Directory, DNS, DHCP  
-- **pfSense** – Pare-feu et passerelle  
-- **Client Windows 11** – Poste utilisateur domaine  
-- **Debian 12 (NGINX)** – Serveur applicatif intranet  
-- **Veeam** – Sauvegarde et PRA  
-
-👉 Cette architecture a servi de **socle pédagogique**, mais n’est plus maintenue.
-
----
-
-# 🔄 Phase 2 – Migration vers VMware ESXi 8.0.2
-
-## 📌 Changement de stratégie
-
-L’objectif n’est plus de migrer **toute l’infrastructure**, mais uniquement :
-
-➡️ **le serveur applicatif Debian 12**
-
-Les autres composants ont été :
-
-- **arrêtés**
-- **non migrés**
-- **décommissionnés volontairement**
-
-### 🎯 Pourquoi ce choix ?
-
-- Simplifier l’architecture  
-- Se concentrer sur la **virtualisation ESXi réelle**  
-- Travailler un **cas d’usage production minimal**  
-- Réduire la complexité inutile d’un AD en lab local  
-- Mettre l’accent sur **Linux, NGINX et la sauvegarde**  
-
----
-
-## 🖥️ Hyperviseur – SVL-PS-HV-01
-
-- **Hyperviseur** : VMware ESXi 8.0.2  
-- **Type** : Bare-metal  
-- **Installation** : SSD dédié  
-- **Accès** : Interface Web sécurisée  
-- **Gestion** :
-  - vSwitch  
-  - Port Groups  
-  - Datastore local  
-
----
-
-## 🌐 Architecture virtualisée actuelle
-
-### VM conservée et migrée
-
-#### 🟥 SVL-PS-APP-01 — Debian 12
-
-**Rôle :**
-
-- Serveur applicatif Linux  
-- Hébergement **NGINX intranet / web**  
-- Base de travail pour :
-  - sécurité Linux  
-  - supervision  
-  - sauvegarde  
-  - optimisation système  
-
-👉 Cette VM constitue désormais **le cœur du lab**.
-
----
-
-## 💾 Sauvegarde et continuité
-
-La nouvelle stratégie prévoit :
-
-- Sauvegarde **ciblée** de la VM Debian  
-- Utilisation de **Veeam** uniquement pour cette charge utile  
-- Stockage des sauvegardes sur :
-  - **NAS personnel local** (sauvegarde locale primaire)
-  - logique inspirée du **3-2-1** à terme  
-
-Objectif : simuler une **production légère mais réaliste**.
-
----
-
-## 🔐 Sécurité de l’hyperviseur
-
-- Mot de passe **root fort**  
-- **SSH désactivé** par défaut  
-- Accès **restreint au LAN**  
-- Sauvegarde de la **configuration ESXi**  
-- Isolation réseau via **vSwitch**  
-
----
-
-# 📈 Objectifs pédagogiques actuels
-
-Ce lab est désormais centré sur :
-
-- la **virtualisation bare-metal ESXi**  
-- l’**administration Linux serveur**  
-- l’**hébergement web NGINX**  
-- la **stratégie de sauvegarde réelle**  
-- la **sécurisation système**  
-- la **documentation technique professionnelle**  
-
-👉 Approche volontairement **minimaliste mais réaliste**.
-
----
-
-# 🎯 Compétences mises en œuvre
-
-- VMware **ESXi**
-- Administration **Linux (Debian)**
-- **NGINX**
-- Sauvegarde **Veeam**
-- Réseau virtuel ESXi
-- Sécurité système
-- Diagnostic & troubleshooting
-- Documentation d’infrastructure
+👉 La **suite réelle du projet** se trouve désormais sur la **branche phase-2-esxi**.
 
 ---
 
 # 👤 Auteur
 
 **Loïck**  
-Projet personnel – **Administration systèmes & réseaux**  
-Laboratoire d’apprentissage **orienté production réelle**
+Projet personnel – Administration systèmes & réseaux  
+Laboratoire d’apprentissage orienté **conditions réelles de production**
+
+---
+
+# ▶️ Accéder à la suite du projet
+
+```bash
+git checkout phase-2-esxi
+```
+
+ou via l’interface GitHub :
+
+➡️ **sélecteur de branche → `phase-2-esxi`**
+
+---
+
+**La phase 1 reste disponible pour consultation,  
+mais le développement actif continue en phase 2.**
