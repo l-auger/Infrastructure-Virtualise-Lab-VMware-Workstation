@@ -2,12 +2,13 @@
 
 ## 🎯 Objectif
 
-Mettre en place une architecture réseau virtuelle cohérente et structurée afin de :
+Mettre en place une architecture réseau virtuelle **simple, cohérente et exploitable** afin de :
 
 - Segmenter correctement les flux  
-- Isoler les environnements (LAN / WAN / Management)  
-- Préparer l’intégration de pfSense  
-- Se rapprocher d’une architecture d’entreprise  
+- Isoler le réseau de **management ESXi**  
+- Fournir un **LAN interne stable pour les VM applicatives**  
+- Préparer l’évolution vers **Docker, Kubernetes et Ansible**  
+- Se rapprocher d’une **architecture de production légère**  
 
 ---
 
@@ -19,142 +20,163 @@ Lors de l’installation d’ESXi, un vSwitch par défaut est créé automatique
 - **Port Group par défaut :** VM Network  
 - **Interface de management associée**
 
-Ce réseau unique est fonctionnel, mais **non structuré pour une architecture multi-segments**.
+Cette configuration minimale est fonctionnelle, mais **manque de séparation logique**  
+entre l’administration de l’hyperviseur et le réseau des machines virtuelles.
 
-👉 Une organisation propre est donc nécessaire.
-
----
-
-## 🏗 1️⃣ Architecture cible
-
-L’objectif est de séparer :
-
-```
-                INTERNET
-                    |
-                 [ WAN ]
-                    |
-               pfSense (VM)
-                    |
-                 [ LAN ]
-                    |
-      ---------------------------------
-      |        |        |        |
-     DC1      DC2      APP     CLIENT
-```
+👉 Une organisation réseau plus propre est donc mise en place.
 
 ---
 
-## ⚙️ 2️⃣ Configuration du vSwitch
+## 🏗 1️⃣ Architecture cible (phase 2)
 
-### vSwitch0
+Contrairement à la phase 1, l’architecture réseau est désormais **simplifiée**  
+et centrée sur les services réellement exploités.
+
+```
+          Réseau physique / Box
+                    |
+             -----------------
+             |               |
+        Management ESXi     LAN VM
+                               |
+                         ----------------
+                         |              |
+                     Windows DNS/DHCP   Debian / K8s / Apps
+```
+
+Objectif :
+
+- garder une **infrastructure lisible**
+- éviter une complexité inutile
+- rester **cohérent avec un lab personnel réaliste**
+
+---
+
+## ⚙️ 2️⃣ Configuration des vSwitch
+
+### vSwitch0 — Management
 
 **Utilisé pour :**
 
-- Interface de management ESXi  
-- Port Group LAN interne  
+- Interface de **management ESXi**
+- Accès **Web UI** et **SSH**
 
 **Caractéristiques :**
 
-- Connecté à la carte réseau physique  
-- Uplink actif  
-- Pas de VLAN (lab simple)  
+- Connecté à la **carte réseau physique**
+- **Uplink actif**
+- Réseau **isolé de la partie applicative**
 
 ---
 
-## 🧩 3️⃣ Création des Port Groups
+### vSwitch1 — LAN interne des VM
 
-Deux Port Groups principaux ont été définis :
+Création d’un **vSwitch dédié** pour les machines virtuelles.
 
-### 🔵 Management Network (par défaut)
+**Rôle :**
 
-Utilisé pour :
+- Héberger les **VM Windows réseau** et **VM Linux applicatives**
+- Fournir un **réseau interne propre**
+- Servir de base pour **Kubernetes / conteneurs**
 
-- Administration ESXi  
-- Accès Web UI  
-- Accès SSH (si activé)  
+**Caractéristiques :**
+
+- Sans accès direct au management ESXi  
+- Configuration simple **sans VLAN** (lab)  
+- Évolutif vers **segmentation future** si nécessaire  
 
 ---
 
-### 🟢 LAN
+## 🧩 3️⃣ Port Groups définis
 
-Réseau interne des machines virtuelles.
+### 🔵 PG-Management
+
+- Administration **ESXi uniquement**
+- Accès restreint au **LAN personnel**
+- Aucun service applicatif hébergé
+
+---
+
+### 🟢 PG-LAN-VM
+
+Réseau principal des machines virtuelles.
 
 **Héberge :**
 
-- DC1  
-- DC2  
-- APP  
-- CLIENT  
-
-Connecté à l’interface **LAN de pfSense**.
+- **Windows Server 2025** (DNS / DHCP)  
+- **Debian 12** (Docker / Kubernetes / NGINX / apps)  
+- Futures **VM de test ou de supervision**
 
 ---
 
-### 🔴 WAN
-
-Port Group dédié à l’interface **WAN de pfSense**.
-
-- Connecté à la carte réseau physique vers l’extérieur  
-
----
-
-## 🧠 Pourquoi cette séparation ?
+## 🧠 Pourquoi cette architecture ?
 
 ### 🔐 Sécurité
 
-- Séparation claire des flux  
-- pfSense devient le **point de contrôle unique**  
-- Isolation logique entre hyperviseur et réseau interne  
+- Isolation claire entre :
+  - **management hyperviseur**
+  - **réseau applicatif**
+- Réduction de la **surface d’attaque**
+- Meilleure maîtrise des flux réseau
 
-### 🏢 Approche entreprise
+---
 
-En production :
+### 🏢 Approche réaliste
 
-- Management réseau isolé  
-- VLAN dédiés  
-- Segmentation forte  
+Même en lab personnel :
+
+- séparation **management / production**
+- réseau interne dédié aux **services**
+- base compatible avec :
+  - **conteneurisation**
+  - **orchestration Kubernetes**
+  - **automatisation Ansible**
+
+👉 Architecture **minimaliste mais crédible**.
 
 ---
 
 ## 🔎 4️⃣ Vérifications effectuées
 
-- vSwitch0 visible et actif  
-- Uplink physique opérationnel  
-- Port Groups créés sans erreur  
-- Management accessible  
-- Aucune perte d’accès après configuration  
+- **vSwitch0 et vSwitch1 actifs**
+- Uplink physique opérationnel
+- Port Groups créés sans erreur
+- Accès Web ESXi fonctionnel
+- Communication réseau entre VM validée
+- Attribution IP via **DHCP Windows** opérationnelle
 
 ---
 
-## 🧪 5️⃣ Tests réseau
+## 🧪 5️⃣ Tests réseau réalisés
 
-**Tests réalisés :**
-
-- Ping ESXi depuis le LAN  
-- Ping entre VM sur le même Port Group  
-- Vérification de la connectivité WAN de pfSense  
-- Accès Web UI stable  
+- Ping entre **VM Linux et Windows**
+- Résolution **DNS interne fonctionnelle**
+- Attribution **DHCP correcte**
+- Accès Internet depuis les VM
+- Accès ESXi stable depuis le LAN
 
 ---
 
 ## 🧠 Analyse technique
 
-La configuration réseau virtuelle permet :
+Cette configuration réseau permet :
 
-- Un **contrôle centralisé des flux**  
-- La **simulation d’une topologie d’entreprise**  
-- La **préparation à l’intégration Veeam**  
-- Une **meilleure lisibilité de l’architecture**  
+- une **séparation propre des rôles**
+- une base saine pour :
+  - **Docker**
+  - **Kubernetes**
+  - **Ansible**
+- une architecture cohérente avec une **production légère**
+- une meilleure **lisibilité du laboratoire**
 
 ---
 
 ## 📌 Prochaine étape
 
-Migration des machines virtuelles :
+Déploiement de l’infrastructure applicative :
 
-- Export OVA ou recréation propre  
-- Import dans ESXi  
-- Attribution aux bons Port Groups  
-- Validation AD / DNS / DHCP  
-- Test complet des flux réseau  
+- Installation **Windows Server DNS/DHCP**
+- Déploiement **Debian 12**
+- Mise en place de **Docker**
+- Installation d’un **cluster Kubernetes (k3s)**
+- Automatisation via **Ansible**
