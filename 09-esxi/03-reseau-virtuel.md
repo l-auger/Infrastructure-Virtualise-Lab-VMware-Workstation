@@ -1,160 +1,67 @@
-# 🌐 Configuration du réseau virtuel – VMware ESXi 8.x
+# 🌐 Mise en place du réseau virtuel ESXi – Phase 2
 
 ## 🎯 Objectif
 
-Mettre en place une architecture réseau virtuelle cohérente et structurée afin de :
+Concevoir une architecture réseau virtuelle :
 
-- Segmenter correctement les flux  
-- Isoler les environnements (LAN / WAN / Management)  
-- Préparer l’intégration de pfSense  
-- Se rapprocher d’une architecture d’entreprise  
+- simple
+- lisible
+- réaliste
 
----
+permettant d’héberger :
 
-## 🧠 Contexte
-
-Lors de l’installation d’ESXi, un vSwitch par défaut est créé automatiquement :
-
-- **vSwitch0**
-- **Port Group par défaut :** VM Network  
-- **Interface de management associée**
-
-Ce réseau unique est fonctionnel, mais **non structuré pour une architecture multi-segments**.
-
-👉 Une organisation propre est donc nécessaire.
+- une VM **Windows Server 2025** (DNS/DHCP)
+- plusieurs VM **Linux** destinées à Docker, Kubernetes et Ansible
 
 ---
 
-## 🏗 1️⃣ Architecture cible
+## 🏗 Principe d’architecture
 
-L’objectif est de séparer :
+L’organisation réseau repose sur une séparation logique entre :
 
-```
-                INTERNET
-                    |
-                 [ WAN ]
-                    |
-               pfSense (VM)
-                    |
-                 [ LAN ]
-                    |
-      ---------------------------------
-      |        |        |        |
-     DC1      DC2      APP     CLIENT
-```
+- le **réseau de management ESXi**
+- le **réseau interne des machines virtuelles**
+
+Cette séparation permet :
+
+- de protéger l’hyperviseur
+- de structurer les flux applicatifs
+- de se rapprocher d’une architecture d’entreprise minimale
 
 ---
 
-## ⚙️ 2️⃣ Configuration du vSwitch
+## 🔵 Réseau de management
 
-### vSwitch0
+Ce réseau est exclusivement dédié :
 
-**Utilisé pour :**
+- à l’administration d’ESXi
+- à l’accès à l’interface Web
+- aux opérations de maintenance
 
-- Interface de management ESXi  
-- Port Group LAN interne  
-
-**Caractéristiques :**
-
-- Connecté à la carte réseau physique  
-- Uplink actif  
-- Pas de VLAN (lab simple)  
+Aucune machine virtuelle applicative n’y est connectée.
 
 ---
 
-## 🧩 3️⃣ Création des Port Groups
+## 🟢 Réseau interne des VM
 
-Deux Port Groups principaux ont été définis :
+Ce réseau héberge :
 
-### 🔵 Management Network (par défaut)
+- les services réseau Windows (DNS/DHCP)
+- les serveurs Linux applicatifs
+- les futurs nœuds Kubernetes
 
-Utilisé pour :
-
-- Administration ESXi  
-- Accès Web UI  
-- Accès SSH (si activé)  
+Il constitue le **cœur fonctionnel du laboratoire**.
 
 ---
 
-### 🟢 LAN
+## 🧪 Validation
 
-Réseau interne des machines virtuelles.
+La configuration est validée lorsque :
 
-**Héberge :**
+- les machines virtuelles communiquent entre elles
+- l’attribution d’adresses IP fonctionne
+- la résolution DNS interne est opérationnelle
+- l’accès Internet est disponible
 
-- DC1  
-- DC2  
-- APP  
-- CLIENT  
-
-Connecté à l’interface **LAN de pfSense**.
-
----
-
-### 🔴 WAN
-
-Port Group dédié à l’interface **WAN de pfSense**.
-
-- Connecté à la carte réseau physique vers l’extérieur  
-
----
-
-## 🧠 Pourquoi cette séparation ?
-
-### 🔐 Sécurité
-
-- Séparation claire des flux  
-- pfSense devient le **point de contrôle unique**  
-- Isolation logique entre hyperviseur et réseau interne  
-
-### 🏢 Approche entreprise
-
-En production :
-
-- Management réseau isolé  
-- VLAN dédiés  
-- Segmentation forte  
-
----
-
-## 🔎 4️⃣ Vérifications effectuées
-
-- vSwitch0 visible et actif  
-- Uplink physique opérationnel  
-- Port Groups créés sans erreur  
-- Management accessible  
-- Aucune perte d’accès après configuration  
-
----
-
-## 🧪 5️⃣ Tests réseau
-
-**Tests réalisés :**
-
-- Ping ESXi depuis le LAN  
-- Ping entre VM sur le même Port Group  
-- Vérification de la connectivité WAN de pfSense  
-- Accès Web UI stable  
-
----
-
-## 🧠 Analyse technique
-
-La configuration réseau virtuelle permet :
-
-- Un **contrôle centralisé des flux**  
-- La **simulation d’une topologie d’entreprise**  
-- La **préparation à l’intégration Veeam**  
-- Une **meilleure lisibilité de l’architecture**  
-
----
-
-## 📌 Prochaine étape
-
-Migration des machines virtuelles :
-
-- Export OVA ou recréation propre  
-- Import dans ESXi  
-- Attribution aux bons Port Groups  
-- Validation AD / DNS / DHCP  
-- Test complet des flux réseau  
+Le réseau virtuel est alors prêt pour le  
+**déploiement des machines virtuelles**.
