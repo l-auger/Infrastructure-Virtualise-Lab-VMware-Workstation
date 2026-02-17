@@ -110,17 +110,5 @@ Laboratoire d’apprentissage orienté **conditions réelles de production**
 
 ---
 
-# ▶️ Accéder à la suite du projet
-
-```bash
-git checkout phase-2-esxi
-```
-
-ou via l’interface GitHub :
-
-➡️ **sélecteur de branche → `phase-2-esxi`**
-
----
-
 **La phase 1 reste disponible pour consultation,  
 mais le développement actif continue en phase 2.**
