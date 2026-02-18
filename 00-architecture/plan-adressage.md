@@ -1,17 +1,23 @@
-# 🧾 Plan d’adressage
+# 🌐 Plan d’adressage IP
 
-## Réseaux 
-- LAN : 192.168.11.0/24 (passerelle: 192.168.11.1)
-- WAN : 192.168.56.0/24
+## 🎯 Objectif
 
-## Équipements principaux
-- pfSense LAN : 192.168.11.1/24
-- pfSense WAN : 192.168.56.22/24
-- DC1 : 192.168.11.3 
-- DC2 : 192.168.11.2
-- Win11 : DHCP
+Documenter l’organisation des adresses IP du laboratoire
+afin de garantir :
 
-## DNS/DHCP
-- DNS primaire : DC1
-- DNS secondaire : DC2
-- DHCP : failover DC1/DC2
+- la cohérence réseau
+- la lisibilité de l’infrastructure
+- la facilité de diagnostic
+
+---
+
+## 🏠 Réseau interne
+
+| Équipement | Rôle | Adresse IP |
+|-----------|------|------------|
+| ESXi | Management | 192.168.10.200 |
+| Windows Server | DNS / DHCP | 192.168.10.20 |
+| Debian | Serveur applicatif | 192.168.10.30 |
+
+> Les adresses exactes peuvent évoluer selon les tests,
+> mais cette structure logique reste identique.
