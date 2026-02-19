@@ -1,129 +1,131 @@
-# 🚀 Évolution du laboratoire – Architecture hybride Windows / Linux
+# Infrastructure virtualisée – Laboratoire VMware ESXi
 
-## 🎯 Objectif de cette nouvelle phase
+## Objectif du projet
 
-Après la mise en place d’une **infrastructure ESXi minimaliste**,  
-le projet évolue vers un laboratoire orienté :
+Ce laboratoire a pour objectif de concevoir et exploiter une infrastructure virtualisée réaliste, hébergée sous **VMware ESXi**, afin de travailler concrètement :
 
-- **déploiement applicatif réel**
-- **automatisation**
-- **conteneurisation**
-- **orchestration moderne**
+- l’administration systèmes Windows et Linux  
+- la gestion réseau en environnement virtualisé  
+- le déploiement d’un serveur applicatif Linux  
+- la mise en place d’une stratégie de sauvegarde et de restauration  
+- l’application de bonnes pratiques d’exploitation  
 
-L’objectif est de manipuler des **technologies concrètement utilisées en entreprise**,  
-tout en conservant une architecture **simple, lisible et pédagogique**.
-
----
-
-# 🧱 Architecture cible
-
-L’infrastructure reposera sur **plusieurs machines virtuelles hébergées sous ESXi** :
-
-## 🪟 Windows Server 2025 – Services d’infrastructure
-
-Une VM Windows sera conservée pour assurer les **services réseau essentiels** :
-
-- **DHCP**
-- **DNS**
-
-Rôle :
-
-- fournir la résolution de noms interne  
-- distribuer automatiquement les adresses IP  
-- simuler un **socle d’infrastructure entreprise minimal**
-
-👉 Aucun Active Directory complet n’est prévu,  
-afin de limiter la complexité et rester centré sur l’applicatif.
+L’approche retenue est volontairement simple, cohérente et proche d’une petite PME, afin de privilégier la compréhension réelle de l’infrastructure plutôt que la complexité artificielle.
 
 ---
 
-## 🐧 Machines Linux – Couche applicative
+## Architecture cible
 
-Le reste de l’infrastructure sera basé sur **Debian 12** :
+L’environnement repose sur plusieurs machines virtuelles hébergées sous ESXi, chacune assurant un rôle précis dans l’infrastructure.
 
-### Rôles prévus
+### Windows Server – Services d’infrastructure
 
-- **serveur applicatif principal**
-- **nœud(s) Kubernetes**
-- **hébergement conteneurisé**
-- **tests de résilience et redéploiement**
+Une machine virtuelle Windows Server fournit les services réseau essentiels :
 
-Cette approche permet de se rapprocher d’un environnement :
+- DHCP : attribution automatique des adresses IP  
+- DNS : résolution de noms interne  
 
-> **Linux-first / cloud-native**, courant en production.
+Ces services permettent de simuler un socle réseau minimal d’entreprise sans déployer d’Active Directory complet, afin de rester concentré sur :
 
----
-
-# 🧰 Technologies déployées
-
-## 🐳 Docker
-- conteneurisation des applications  
-- isolation des services  
-- déploiement rapide et reproductible  
-
-## ☸️ Kubernetes (k3s)
-- orchestration des conteneurs  
-- redémarrage automatique  
-- montée en charge  
-- exposition via Ingress  
-
-## 🤖 Ansible
-- installation automatisée des VM  
-- configuration système reproductible  
-- déploiement applicatif sans action manuelle  
-- logique **Infrastructure as Code**  
+- l’exploitation système  
+- la configuration réseau  
+- la gestion des dépendances entre services  
 
 ---
 
-# 🌐 Cas d’usage applicatif
+### Debian 12 – Serveur applicatif Linux
 
-Le laboratoire visera à déployer :
+Une machine virtuelle Debian 12 joue le rôle de serveur applicatif.
 
-- une **application web** (API ou site interne)
-- un **reverse proxy NGINX**
-- une **base de données conteneurisée**
-- éventuellement :
-  - supervision
-  - stockage persistant
-  - tests de reprise
+Fonctions principales :
+
+- hébergement d’une application web  
+- déploiement via Docker  
+- exposition du service via NGINX  
+- tests de connectivité réseau interne (DNS, passerelle, firewall)  
 
 Objectif :
 
-> manipuler un **cycle applicatif complet**  
-> déploiement → panne → redéploiement → sauvegarde.
+Manipuler un environnement Linux proche de la production et comprendre la gestion complète d’un service applicatif.
 
 ---
 
-# 💾 Sauvegarde
+## Architecture réseau
 
-La stratégie reposera sur :
+L’infrastructure réseau s’appuie sur :
 
-- **Veeam Backup & Replication**
-- sauvegarde des **VM critiques**
-- stockage sur :
-  - **NAS personnel local**
-  - évolution possible vers logique **3-2-1**
+- Hyperviseur : VMware ESXi  
+- Pare-feu : pfSense  
+- Réseau LAN interne virtualisé  
+
+Fonctionnement :
+
+- attribution des adresses IP via DHCP Windows  
+- résolution DNS interne via Windows Server  
+- filtrage et séparation des flux via pfSense  
+
+Le pare-feu assure :
+
+- la séparation WAN / LAN  
+- le contrôle des règles réseau  
+- la protection minimale de l’infrastructure virtualisée  
 
 ---
 
-# 📈 Bénéfices pédagogiques
+## Sauvegarde et reprise d’activité
 
-Cette phase permet de :
+La protection de l’environnement repose sur :
 
-- combiner **infrastructure Windows minimale** et **écosystème Linux moderne**
-- comprendre les bases du **DevOps** et du **cloud-native**
-- manipuler **Docker, Kubernetes et Ansible** en conditions réelles
-- produire une **documentation technique crédible pour un portfolio**
+- Veeam Backup & Replication  
+
+Objectifs :
+
+- sauvegarder les machines virtuelles critiques  
+- tester des restaurations complètes  
+- valider le fonctionnement des services après récupération  
+
+Tests réalisés :
+
+- restauration d’une VM supprimée  
+- vérification des services applicatifs  
+- contrôle de la connectivité réseau et des dépendances  
+
+Une évolution vers une stratégie de sauvegarde de type **3-2-1** reste envisageable.
 
 ---
 
-# 🗺️ Position dans le projet global
+## Compétences développées
+
+Ce laboratoire permet de travailler concrètement :
+
+- administration Windows Server  
+- configuration DHCP / DNS  
+- virtualisation sous VMware ESXi  
+- exploitation Linux serveur  
+- conteneurisation applicative de base  
+- sauvegarde et restauration en contexte entreprise  
+- rédaction de documentation technique structurée  
+
+---
+
+## Position dans le projet global
 
 | Phase | Orientation | Statut |
-|-------|-------------|--------|
-| Phase 1 | Infrastructure PME complète sous Workstation | ✅ Terminée |
-| Phase 2 | ESXi minimaliste + Debian | 🚧 En cours |
-| Phase 3 | Architecture hybride + conteneurs + automatisation | 🔜 Démarrage |
+|-------|------------|--------|
+| Phase 1 | Infrastructure complète sous VMware Workstation | Terminée |
+| Phase 2 | Infrastructure ESXi simplifiée et réaliste | En cours |
+| Phase 3 | Optimisation, supervision et PRA avancé | À venir |
 
-Cette évolution constitue la **suite logique du laboratoire**  
-vers une infrastructure **moderne, automatisée et proche de la production**.
+---
+
+## Philosophie du laboratoire
+
+L’objectif n’est pas de multiplier les technologies, mais de maîtriser une architecture cohérente et exploitable.
+
+Chaque composant du laboratoire est :
+
+- installé  
+- configuré  
+- testé  
+- documenté  
+- restauré après panne simulée  
