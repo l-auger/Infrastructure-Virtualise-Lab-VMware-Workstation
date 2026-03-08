@@ -19,5 +19,5 @@ afin de garantir :
 | Windows Server | DNS / DHCP | 192.168.10.20 |
 | Debian | Serveur applicatif | 192.168.10.30 |
 
-> Les adresses exactes peuvent évoluer selon les tests,
-> mais cette structure logique reste identique.
+
+
