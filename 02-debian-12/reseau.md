@@ -29,11 +29,10 @@ La machine virtuelle **SVL-PS-LIN-01** est connectée au **VLAN PG-LAN**, dédi�
 
 ---
 
-## 🖧 Topologie réseau ESXi
+## 🖧 PG-LAN ESXi
 
 La capture ci-dessous montre le **port group PG-LAN** configuré sur **vSwitch0** ainsi que les machines virtuelles connectées au réseau interne.
 
-![Topologie réseau PG-LAN](screenshots/05-network.png)
 
 Les machines virtuelles présentes sur ce réseau interne sont :
 
