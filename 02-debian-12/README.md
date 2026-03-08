@@ -1,22 +1,23 @@
-# Debian 12 — Documentation & Configuration
+# 🖥️ SVL-PS-LIN-01 – Serveur Intranet
 
-Cette partie du lab reprend et consolide des éléments réalisés dans mon projet **Linux TP2**.
-Objectif : réutiliser mes travaux précédents dans une infra cohérente, documentée et réutilisable, afin de progresser de façon continue.
+## 🎯 Objectif
+Déployer un serveur intranet accessible uniquement sur le réseau interne de l’entreprise.
 
-## Rôle de la VM
-- OS : Debian 12
-- Rôle : (à compléter : serveur utilitaire / reverse proxy / serveur web / bastion / etc.)
-- Nom VM : (ex: SVL-APP-01)
-- Réseau : (VLAN/segment, IP, GW, DNS)
+## ⚙️ Infrastructure
+- **Hyperviseur** : VMware ESXi 8.0  
+- **VLAN** : PG-LAN (accès interne uniquement)  
+- **Nom VM** : SVL-PS-LIN-01  
+- **IP** : 192.168.11.70  
+- **DNS** : intranet.entreprise.local  
 
-## Documentation
-- [Installation](./01-installation.md)
-- [Réseau](./02-reseau.md)
-- [Comptes & SSH](./03-comptes-ssh.md)
-- [Hardening](./04-hardening.md)
-- [Services](./05-services.md)
-- [Logs & monitoring](./06-logs-monitoring.md)
-- [Tests & validation](./07-tests-validation.md)
+## 🔧 Actions réalisées
+- Migration de la VM depuis **VMware Workstation** vers **ESXi**
+- Placement de la VM dans le **VLAN PG-LAN**
+- Configuration réseau (IP, passerelle, DNS)
+- Ajout d’un **enregistrement DNS A** pour `intranet.entreprise.local`
+- Validation de l’accès au service intranet via le navigateur
 
-## Sources / Références
-- Travail initial : **Linux TP2**
+## ✅ Résultat
+- Accès à l’intranet fonctionnel via `intranet.entreprise.local`
+- Service accessible uniquement depuis le réseau interne
+- VM opérationnelle sur l’infrastructure ESXi
