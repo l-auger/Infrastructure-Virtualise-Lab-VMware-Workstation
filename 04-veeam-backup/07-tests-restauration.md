@@ -25,4 +25,7 @@ Exemple de restauration d'une machine virtuelle.
 Une fois la restauration terminée, la machine virtuelle peut être redémarrée et testée.
 
 ![Restore Success](screenshots/04-restore-success.png)
+
+Vous pouvez constater sur la capture que l’entrée TESTDERESTAURATION, créée après la sauvegarde, n’apparaît plus. Cela confirme que la restauration a bien été effectuée et que la machine virtuelle a été remplacée par la version restaurée
+
 ![Restore Success](screenshots/05-restore-success.png)
