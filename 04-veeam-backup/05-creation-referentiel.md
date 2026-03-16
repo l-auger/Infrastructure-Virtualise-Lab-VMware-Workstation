@@ -11,7 +11,7 @@ sur le disque `F:\` (DS-LOCAL-01).
 
 ### 1. Nommer le référentiel
 
-![Nom du référentiel](01-create-volume.png)
+![Nom du référentiel](screenshots/01-create-volume.png)
 
 Nom : `Sauvegarde de l'applicatif SVL-APP-01`
 
@@ -19,7 +19,7 @@ Nom : `Sauvegarde de l'applicatif SVL-APP-01`
 
 ### 2. Choisir le serveur
 
-![Choix du serveur](02-Choix-serveur.png)
+![Choix du serveur](screenshots/02-Choix-serveur.png)
 
 Sélection du serveur de backup : `WIN-0BD3QQC54CE (Backup server)`
 
@@ -27,7 +27,7 @@ Sélection du serveur de backup : `WIN-0BD3QQC54CE (Backup server)`
 
 ### 3. Définir le chemin de stockage
 
-![Chemin du référentiel](03-Choix-repo.png)
+![Chemin du référentiel](screenshots/03-Choix-repo.png)
 
 Chemin : `F:\Sauvegardes-APP-01`  
 Tâches simultanées max : `4`
@@ -36,7 +36,7 @@ Tâches simultanées max : `4`
 
 ### 4. Configurer le Mount Server
 
-![Mount Server](04-mount-server.png)
+![Mount Server](screenshots/04-mount-server.png)
 
 Mount server Windows : `WIN-0BD3QQC54CE (Backup server)`  
 Utilisé pour les restaurations granulaires et la récupération instantanée.
@@ -45,7 +45,7 @@ Utilisé pour les restaurations granulaires et la récupération instantanée.
 
 ### 5. Vérification des composants
 
-![Review](05-review.png)
+![Review](screenshots/05-review.png)
 
 Veeam vérifie que tous les composants nécessaires sont déjà présents :
 - Mount service
@@ -58,7 +58,7 @@ Veeam vérifie que tous les composants nécessaires sont déjà présents :
 
 ### 6. Application des paramètres
 
-![Application des paramètres](06-application-paramètres.png)
+![Application des paramètres](screenshots/06-application-paramètres.png)
 
 Tous les composants sont enregistrés et le référentiel est sauvegardé avec succès.
 
@@ -66,7 +66,7 @@ Tous les composants sont enregistrés et le référentiel est sauvegardé avec s
 
 ### 7. Résumé
 
-![Résumé](07-resume.png)
+![Résumé](screenshots/07-resume.png)
 
 | Paramètre | Valeur |
 |-----------|--------|

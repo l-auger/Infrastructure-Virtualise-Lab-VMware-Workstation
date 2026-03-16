@@ -19,7 +19,7 @@ Monter l'ISO de Veeam sur le lecteur DVD de la VM depuis l'interface ESXi.
 
 ### 2. Lancer le Setup
 
-![Installation Veeam](01-install-veeam.png)
+![Installation Veeam](screenshots/01-install-veeam.png)
 
 Ouvrir le lecteur DVD `(E:)` et exécuter `Setup.exe`.
 

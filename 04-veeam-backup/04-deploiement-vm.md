@@ -2,7 +2,7 @@
 
 ## Configuration matérielle
 
-![Déploiement VM](02-déploiement-vm.png)
+![Déploiement VM](screenshots/02-déploiement-vm.png)
 
 | Composant | Valeur |
 |-----------|--------|
