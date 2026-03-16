@@ -113,7 +113,7 @@ Ce laboratoire permet de travailler concrètement :
 | Phase | Orientation | Statut |
 |-------|------------|--------|
 | Phase 1 | Infrastructure complète sous VMware Workstation | Terminée |
-| Phase 2 | Infrastructure ESXi simplifiée et réaliste | En cours |
+| Phase 2 | Infrastructure ESXi simplifiée et réaliste | Terminée |
 | Phase 3 | Optimisation, supervision et PRA avancé | À venir |
 
 ---
