@@ -73,4 +73,6 @@ Options laissées par défaut — aucun traitement applicatif activé pour ce la
 
 ## Résultat
 
+![ApplicationDuJob](screenshots/08-job-apply.png)
+
 Le job de sauvegarde est configuré et planifié. Il s'exécutera automatiquement chaque jour à **14h00** et conservera **7 points de restauration**.
