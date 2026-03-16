@@ -40,7 +40,6 @@ Une machine virtuelle Debian 12 joue le rôle de serveur applicatif.
 Fonctions principales :
 
 - hébergement d’une application web  
-- déploiement via Docker  
 - exposition du service via NGINX  
 - tests de connectivité réseau interne (DNS, passerelle, firewall)  
 
@@ -90,8 +89,6 @@ Tests réalisés :
 - vérification des services applicatifs  
 - contrôle de la connectivité réseau et des dépendances  
 
-Une évolution vers une stratégie de sauvegarde de type **3-2-1** reste envisageable.
-
 ---
 
 ## Compétences développées
@@ -102,7 +99,6 @@ Ce laboratoire permet de travailler concrètement :
 - configuration DHCP / DNS  
 - virtualisation sous VMware ESXi  
 - exploitation Linux serveur  
-- conteneurisation applicative de base  
 - sauvegarde et restauration en contexte entreprise  
 - rédaction de documentation technique structurée  
 
@@ -113,7 +109,7 @@ Ce laboratoire permet de travailler concrètement :
 | Phase | Orientation | Statut |
 |-------|------------|--------|
 | Phase 1 | Infrastructure complète sous VMware Workstation | Terminée |
-| Phase 2 | Infrastructure ESXi simplifiée et réaliste | En cours |
+| Phase 2 | Infrastructure ESXi simplifiée et réaliste | Terminée |
 | Phase 3 | Optimisation, supervision et PRA avancé | À venir |
 
 ---
