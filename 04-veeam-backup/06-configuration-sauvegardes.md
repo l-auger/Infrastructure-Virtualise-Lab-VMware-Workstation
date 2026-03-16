@@ -10,7 +10,7 @@ Créer un job de sauvegarde dans Veeam pour protéger la VM **SVL-APP-01**.
 
 ### 1. Nommer le job
 
-![Nom du job](01-nom-job.png)
+![Nom du job](screenshots/01-nom-job.png)
 
 Nom : `Sauvegarde applicatif - SVL-APP-01`  
 Priorité haute activée.
@@ -19,7 +19,7 @@ Priorité haute activée.
 
 ### 2. Sélectionner la VM source
 
-![Sélection de la VM](02-selection-vm.png)
+![Sélection de la VM](screenshots/02-selection-vm.png)
 
 VM ajoutée : **SVL-APP-01** — Taille totale : `10,2 GB`
 
@@ -27,7 +27,7 @@ VM ajoutée : **SVL-APP-01** — Taille totale : `10,2 GB`
 
 ### 3. Définir le stockage
 
-![Stockage](03-mise-en-place-du-stockage.png)
+![Stockage](screenshots/03-mise-en-place-du-stockage.png)
 
 | Paramètre | Valeur |
 |-----------|--------|
@@ -39,7 +39,7 @@ VM ajoutée : **SVL-APP-01** — Taille totale : `10,2 GB`
 
 ### 4. Guest Processing
 
-![Guest Processing](04-guest-processing.png)
+![Guest Processing](screenshots/04-guest-processing.png)
 
 Options laissées par défaut — aucun traitement applicatif activé pour ce lab.
 
@@ -47,7 +47,7 @@ Options laissées par défaut — aucun traitement applicatif activé pour ce la
 
 ### 5. Planification
 
-![Planification](05-planification.png)
+![Planification](screenshots/05-planification.png)
 
 | Paramètre | Valeur |
 |-----------|--------|
@@ -60,7 +60,7 @@ Options laissées par défaut — aucun traitement applicatif activé pour ce la
 
 ### 6. Résumé
 
-![Résumé du job](06-resume-job.png)
+![Résumé du job](screenshots/06-resume-job.png)
 
 | Paramètre | Valeur |
 |-----------|--------|
