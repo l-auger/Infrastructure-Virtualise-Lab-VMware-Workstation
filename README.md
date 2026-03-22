@@ -23,7 +23,7 @@ L’objectif est de concevoir, déployer et faire évoluer une **infrastructure 
 | Phase   | Description                              | Statut        |
 |---------|------------------------------------------|---------------|
 | Phase 1 | Infrastructure sous VMware Workstation   | ✅ Terminée    |
-| Phase 2 | Migration vers VMware ESXi 8.x           | 🚧 En cours    |
+| Phase 2 | Migration vers VMware ESXi 8.x           | ✅ Terminée   |
 | Phase 3 | Intégration Veeam & PRA                  | 🔄 En déploiement |
 
 ---
