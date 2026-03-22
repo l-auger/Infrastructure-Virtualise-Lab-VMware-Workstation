@@ -172,11 +172,11 @@ La mise en œuvre de ce laboratoire permet de développer plusieurs compétences
 
 # 7. Positionnement dans le projet global
 
-| Phase | Orientation | Statut |
-|------|-------------|--------|
-| Phase 1 | Infrastructure complète sous VMware Workstation | ![Statut](https://img.shields.io/badge/Statut-Terminée-brightgreen) |
-| Phase 2 | Infrastructure ESXi simplifiée | ![Statut](https://img.shields.io/badge/Statut-Terminée-brightgreen) |
-| Phase 3 | Supervision et amélioration de l’exploitation | ![Statut](https://img.shields.io/badge/Statut-En%20cours-orange) |
+| Phase   | Description                              | Statut        |
+|---------|------------------------------------------|---------------|
+| Phase 1 | Infrastructure sous VMware Workstation   | ✅ Terminée    |
+| Phase 2 | Migration vers VMware ESXi 8.x           | ✅ Terminée   |
+| Phase 3 | Intégration Veeam & PRA                  | 🔄 En déploiement |
 
 ---
 
