@@ -106,11 +106,11 @@ Ce laboratoire permet de travailler concrètement :
 
 ## Position dans le projet global
 
-| Phase | Orientation | Statut |
-|-------|------------|--------|
-| Phase 1 | Infrastructure complète sous VMware Workstation | Terminée |
-| Phase 2 | Infrastructure ESXi simplifiée et réaliste | Terminée |
-| Phase 3 | Optimisation, supervision et PRA avancé | À venir |
+| Phase   | Description                              | Statut        |
+|---------|------------------------------------------|---------------|
+| Phase 1 | Infrastructure sous VMware Workstation   | ✅ Terminée    |
+| Phase 2 | Migration vers VMware ESXi 8.x           | ✅ Terminée   |
+| Phase 3 | Intégration Veeam & PRA                  | 🔄 En déploiement |
 
 ---
 
