@@ -68,8 +68,6 @@ Une machine virtuelle exécutant **Debian** joue le rôle de serveur Linux princ
 Elle remplit deux fonctions :
 
 - hébergement d’un **intranet local**
-- **supervision de l’infrastructure**
-
 ---
 
 ### 3.2.1 Hébergement d’un intranet interne
