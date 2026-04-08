@@ -161,7 +161,6 @@ La mise en œuvre de ce laboratoire permet de développer plusieurs compétences
 - configuration **DHCP / DNS**
 - exploitation d’un **serveur Linux Debian**
 - déploiement d’un **serveur web NGINX**
-- utilisation de **Docker**
 - mise en place d’une **solution de supervision**
 - gestion des **sauvegardes et restaurations**
 - rédaction de **documentation technique**
