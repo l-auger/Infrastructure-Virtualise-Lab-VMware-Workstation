@@ -110,7 +110,7 @@ Ce laboratoire permet de travailler concrètement :
 |---------|------------------------------------------|---------------|
 | Phase 1 | Infrastructure sous VMware Workstation   | ✅ Terminée    |
 | Phase 2 | Migration vers VMware ESXi 8.x           | ✅ Terminée   |
-| Phase 3 | Intégration Veeam & PRA                  | 🔄 En déploiement |
+| Phase 3 | Intégration Veeam & PRA                  | ✅ Terminée  |
 
 ---
 
