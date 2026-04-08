@@ -13,12 +13,15 @@
 
 ### Vérification IP
 
+```bash
 ipconfig /all
-
+```
 ### Test passerelle
 
+```bash
 ping 192.168.11.1
-
+```
 ### Test accès Internet IP
-
+```bash
 ping 8.8.8.8
+```
