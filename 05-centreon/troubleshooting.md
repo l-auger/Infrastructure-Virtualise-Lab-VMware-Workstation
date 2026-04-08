@@ -46,12 +46,6 @@
 
 ---
 
-## ❌ Erreurs système supplémentaires
-
-![Erreur système](screenshots/15-erreur.png)
-
----
-
 ## ❌ Problème SNMP
 
 ![SNMP problème](screenshots/16-SNMP-PROBLEM.png)
