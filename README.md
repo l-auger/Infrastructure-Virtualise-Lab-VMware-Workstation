@@ -29,7 +29,7 @@ Dans un environnement professionnel, la supervision constitue un élément essen
 - d’analyser l’état des **services critiques**
 - de valider la **reprise de service après incident**
 
-La solution retenue pour ce laboratoire est **Centreon**, déployée au moyen de **Docker**.
+La solution retenue pour ce laboratoire est **Centreon**.
 
 Cette approche permet de simplifier le déploiement de la plateforme de supervision tout en conservant une **architecture modulaire**.
 
@@ -89,7 +89,7 @@ Cette approche permet de reproduire un **service interne typiquement présent da
 
 ### 3.2.2 Supervision de l’infrastructure
 
-La supervision de l’environnement est assurée par **Centreon**, déployé sous forme de conteneur **Docker** sur le serveur Debian.
+La supervision de l’environnement est assurée par **Centreon**.
 
 La plateforme de supervision permet de surveiller :
 
@@ -161,7 +161,6 @@ La mise en œuvre de ce laboratoire permet de développer plusieurs compétences
 - configuration **DHCP / DNS**
 - exploitation d’un **serveur Linux Debian**
 - déploiement d’un **serveur web NGINX**
-- utilisation de **Docker**
 - mise en place d’une **solution de supervision**
 - gestion des **sauvegardes et restaurations**
 - rédaction de **documentation technique**
