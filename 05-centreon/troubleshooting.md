@@ -2,7 +2,7 @@
 
 ## ❌ Exec Failed
 
-![Erreur exec failed](images/09-troubleshooting-execfailed.png)
+![Erreur exec failed](screenshots/09-troubleshooting-execfailed.png)
 
 👉 Cause possible :
 
@@ -13,7 +13,7 @@
 
 ## ❌ Problème utilisateur
 
-![Erreur utilisateur](images/10-troubleshooting-user.png)
+![Erreur utilisateur](screenshots/10-troubleshooting-user.png)
 
 👉 Solution :
 
@@ -23,7 +23,7 @@
 
 ## ❌ Droits base de données
 
-![Droits BDD](images/11-Droits-BDD.png)
+![Droits BDD](screenshots/11-Droits-BDD.png)
 
 👉 Solution :
 
@@ -33,11 +33,11 @@
 
 ## ❌ Problème de partition
 
-![Partitions](images/12-partitions-troubleshooting.png)
+![Partitions](screenshots/12-partitions-troubleshooting.png)
 
-![Partitioning](images/13-partitioning-troubleshooting.png)
+![Partitioning](screenshots/13-partitioning-troubleshooting.png)
 
-![Status partition](images/14-status-partitioning.png)
+![Status partition](screenshots/14-status-partitioning.png)
 
 👉 Solution :
 
@@ -48,21 +48,21 @@
 
 ## ❌ Erreurs système supplémentaires
 
-![Erreur système](images/15-erreur.png)
+![Erreur système](screenshots/15-erreur.png)
 
 ---
 
 ## ❌ Problème SNMP
 
-![SNMP problème](images/16-SNMP-PROBLEM.png)
+![SNMP problème](screenshots/16-SNMP-PROBLEM.png)
 
-![Logs SNMP](images/19-snmp-logs.png)
+![Logs SNMP](screenshots/19-snmp-logs.png)
 
 ---
 
 ## ✅ Résolution SNMP
 
-![SNMP résolu](images/20-resolution-SNMP.png)
+![SNMP résolu](screenshots/20-resolution-SNMP.png)
 
 ---
 

@@ -34,31 +34,31 @@ Déploiement complet de **Centreon** dans un environnement virtualisé.
 
 ### VM
 
-![VM](images/01-new-vm.png)
+![VM](screenshots/01-new-vm.png)
 
 ### Stockage
 
-![Stockage](images/02-allocation-storage.png)
+![Stockage](screenshots/02-allocation-storage.png)
 
 ### Debian
 
-![Debian](images/06-debian-active.png)
+![Debian](screenshots/06-debian-active.png)
 
 ### Installation plugins
 
-![Plugins](images/07-installation-plugins.png)
+![Plugins](screenshots/07-installation-plugins.png)
 
 ### Centreon actif
 
-![Centreon](images/08-centreon-actif.png)
+![Centreon](screenshots/08-centreon-actif.png)
 
 ### SNMP
 
-![SNMP](images/18-conf-SNMP.png)
+![SNMP](screenshots/18-conf-SNMP.png)
 
 ### Swap
 
-![Swap](images/22-swap-actif.png)
+![Swap](screenshots/22-swap-actif.png)
 
 ---
 
